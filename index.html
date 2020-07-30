@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="manifest" href="manifest.json">
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
-	<meta name="description" content="Daniel Hsing: bleeding-edge JavaScript, OSS, high school" />
+	<meta name="description" content="A PhD student, researcher, data scientist and statistician who enjoys doing cutting edge mathematical research and finding impactful applications for it." />
 	<meta name="keywords" content="harrison wilde personal student projects publications" />
 	<meta name="language" content="en-gb" />
 	<meta name="distribution" content="Global" />
@@ -38,7 +38,9 @@
 		}
 
 		.active, .collapsible:hover {
-			color: rgb(155, 155, 255);
+			/* color: rgb(155, 155, 255); */
+			text-decoration: underline;
+			cursor: pointer;
 		}
 
 		.collapsible:after {
@@ -60,7 +62,7 @@
 		}
 
 		a:hover {
-			border-bottom: 0.1px solid blue;
+			text-decoration: underline;
 			cursor: pointer;
 		}
 
@@ -89,7 +91,8 @@
 		}
 
 		.container {
-			padding: 1em 20em;
+			max-width: 40em;
+			padding: 0em 3em;
 		}
 
 		@media(max-width: 1024px) {
@@ -120,7 +123,7 @@
 		}
 
 		#links {
-			margin-top: 1em;
+			margin-bottom: 1em;
 			display: flex;
 			flex-direction: row;
 		}
@@ -138,13 +141,13 @@
 <body>
 	<div class="container" id="header">
 		<h1>> Harrison Wilde</h1>
-		<div id="links">
-			<a href="https://twitter.com/HarrisonDWilde">Twitter</a>
-			<a href="https://linkedin.com/in/HarrisonWilde">LinkedIn</a>
-			<a href="https://github.com/HarrisonWilde">GitHub</a>
-            <a href="https://scholar.google.com/citations?user=GKk_420AAAAJ&hl=en">Google Scholar</a>
-            <a href="https://orcid.org/0000-0002-4391-8204">Orcid</a>
-		</div>
+	</div>
+	<div class="container" id="links">
+		<a href="https://twitter.com/HarrisonDWilde">Twitter</a>
+		<a href="https://linkedin.com/in/HarrisonWilde">LinkedIn</a>
+		<a href="https://github.com/HarrisonWilde">GitHub</a>
+		<a href="https://scholar.google.com/citations?user=GKk_420AAAAJ&hl=en">Google Scholar</a>
+		<a href="https://orcid.org/0000-0002-4391-8204">Orcid</a>
 	</div>
 	<div class="container" id="intro">
 		<p>A PhD student, researcher, data scientist and statistician who enjoys doing cutting edge mathematical research and finding impactful applications for it.</p>
@@ -182,7 +185,7 @@
 		<div class="content">
 			Work carried out as a DSSG fellow in 2019. We augmented <a href="https://www.streetlink.org.uk">Homeless Link's platform for members of the public to refer rough sleepers to essential service providers</a> (Pre-print of paper summarising the work and hopefully publication to follow). This work was presented at the DSSG DataFest at the shard in London and was to be presented at <a href="https://datafestival.de">The Munich Data Festival</a> before disruption due to COVID-19.</p>
 			</br>
-			<iframe width="100%" src="https://www.youtube.com/embed/EDCNF_xudDw?start=2774" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/EDCNF_xudDw?start=2773" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 		</div>
         <h3>Fundamentals of Bayesian Inference</h3>
 		<!-- <p>2019 Dec => Present</p> -->
@@ -191,10 +194,6 @@
 			Fill in.
 		</div>
 	</div>
-    <!-- <div class="container", id="publications">
-        <h2>Things I've written</h2>
-        <p></p>
-    </div> -->
     <div class="container", id="experience">
         <h2>My affiliations</h2>
         PhD Student at the <a href="https://warwick.ac.uk/fac/sci/statistics/">University of Warwick's Department of Statistics</a>, <a href="https://warwick.ac.uk/services/dc/schols_fund/scholarships_and_funding/feuer/">Feuer International Scholar in Artificial Intelligence 2019</a>, <a href="http://www.dssgfellowship.org/people/2019-fellows-mentors-warwick/">Data Science for Social Good Fellow 2019</a>, Visiting Researcher and Data Scientist at <a href="https://www.homeless.org.uk">Homeless Link</a>, Contributor to <a href="https://github.com/TuringLang">Turing.jl (Probabilistic Programming Language)</a>, Collaborative Researcher at <a href="https://www.turing.ac.uk">The Alan Turing Institute</a>, Volunteer Data Scientist at <a href="https://www.datakind.org">DataKind</a>.</p>
