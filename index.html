@@ -18,10 +18,11 @@
 	<style>
 		a {
 			color: blue;
-			text-decoration: none;
+			text-decoration: underline;
 		}
 
 		.collapsible {
+			font-size: 14px;
 			background-color: rgba(228, 0, 0, 0);
 			color: blue;
 			font-family: Menlo, 'Inconsolata', monospace;
@@ -31,7 +32,7 @@
 			border: none;
 			outline: none;
 			margin-top: 0.3em;
-			line-height: 140%;
+			line-height: 150%;
 			margin-bottom: 0.3em;
 			font-size: 1em;
 			text-align: left;
@@ -61,8 +62,17 @@
 			transition: max-height 0.2s ease-out;
 		}
 
+		.expander-content {
+			padding-top: 1em;
+			padding-bottom: 1em;
+		}
+
+		.thing {
+			margin-bottom: 1.5em;
+		}
+
 		a:hover {
-			text-decoration: underline;
+			text-decoration: none;
 			cursor: pointer;
 		}
 
@@ -82,8 +92,9 @@
 		}
 
 		p {
+			font-size: 14px;
 			margin-top: 0.3em;
-			line-height: 140%;
+			line-height: 150%;
 			margin-bottom: 0.3em;
 		}
 
@@ -95,7 +106,7 @@
 		}
 
 		.container {
-			max-width: 40em;
+			max-width: 42em;
 			padding: 0em 3em;
 		}
 
@@ -128,17 +139,10 @@
 
 		#links {
 			margin-bottom: 1em;
-			display: flex;
-			flex-direction: row;
-			overflow-wrap:break-word;
 		}
 
 		#links a {
-			margin-right: 1.5em;
-		}
-
-		#projects p {
-			padding-left: 1em;
+			margin-right: 1em;
 		}
 	</style>
 </head>
@@ -159,49 +163,71 @@
 	</div>
 	<div class="container" id="projects">
         <h2>Things I'm working on</h2>
-        <h3>COVID-19</h3>
-		<!-- <p>2020 Jun => Present</p> -->
-		<button class="collapsible">Working with the NHS to cope with hospital demand during the pandemic</button>
-		<div class="content">
-			Working with NHS daily site report data, we conducted <a href="https://www.medrxiv.org/content/medrxiv/early/2020/06/25/2020.06.24.20139048.full.pdf">a geotemporal survey of hospital bed saturation across England during the first wave of the COVID-19 Pandemic</a>. This paper was featured in <a href="https://www.hdruk.ac.uk/wp-content/uploads/2020/07/200707-Health-Data-Research-UK-COVID-19-weekly-update-paper.pdf">one of HDR's SAGE reports</a>.
+        <div class="thing">
+			<h3>COVID-19</h3>
+			<!-- <p>2020 Jun => Present</p> -->
+			<button class="collapsible">Working with the NHS to cope with hospital demand during the pandemic</button>
+			<div class="content">
+				<div class="expander-content">
+					<p>Working with NHS daily site report data, we conducted <a href="https://www.medrxiv.org/content/medrxiv/early/2020/06/25/2020.06.24.20139048.full.pdf">a geotemporal survey of hospital bed saturation across England during the first wave of the COVID-19 Pandemic</a>. This paper was featured in <a href="https://www.hdruk.ac.uk/wp-content/uploads/2020/07/200707-Health-Data-Research-UK-COVID-19-weekly-update-paper.pdf">one of HDR's SAGE reports</a>.</p>
+				</div>
+			</div>
+			<!-- <p>2020 Feb => Present</p>  -->
+			<button class="collapsible">Modelling COVID-19 exit strategies for policy makers in the United Kingdom and beyond</button>
+			<div class="content">
+				<div class="expander-content">
+					<p>Investigating the potential impacts of different testing volumes, types and policies using extended epidemological models and expert knowledge in testing parameters and characteristics. There is an <a href="https://gbohner.github.io/coexist/">initial public-facing report</a> and a dashboard to explore the models (coming soon). Additionally, funding has been secured from Microsoft for <a href="https://www.microsoft.com/en-us/research/collaboration/studies-in-pandemic-preparedness/?OCID=msr_project_studies_tw#!projects">further work on pandemic preparedness and modelling in collaboration with MIT</a>.</p>
+				</div>
+			</div>
 		</div>
-        <!-- <p>2020 Feb => Present</p>  -->
-		<button class="collapsible">Modelling COVID-19 exit strategies for policy makers in the United Kingdom and beyond</button>
-		<div class="content">
-			Investigating the potential impacts of different testing volumes, types and policies using extended epidemological models and expert knowledge in testing parameters and characteristics. There is an <a href="https://gbohner.github.io/coexist/">initial public-facing report</a> and a dashboard to explore the models (coming soon). Additionally, funding has been secured from Microsoft for <a href="https://www.microsoft.com/en-us/research/collaboration/studies-in-pandemic-preparedness/?OCID=msr_project_studies_tw#!projects">further work on pandemic preparedness and modelling in collaboration with MIT</a>.
+		<div class="thing">
+			<h3>Data Science for Social Good</h3>
+			<!-- <p>2019 Oct => Present</p> -->
+			<button class="collapsible">Running the DSSG Fellowship at The Turing</button>		
+			<div class="content">
+				<div class="expander-content">
+					<p>Assisting with the running of the <a href="https://www.turing.ac.uk/collaborate-turing/data-science-social-good">Data Science for Social Good Fellowship in the UK</a> through reviewing project partners spanning Ofsted, World Bank and more. Giving advice to current fellows and helping make evidential studies into impactful implementations.</p>
+				</div>
+			</div>
+			<button class="collapsible">Taking Part in Data Study Groups at The Turing</button>		
+			<div class="content">
+				<div class="expander-content">
+					<p>Fill in.</p>
+				</div>
+			</div>
+			<!-- <p>2019 Sep => Present</p> -->
+			<button class="collapsible">Collaborating with QuantumBlack to connect rough sleepers with essential services in the UK</button>		
+			<div class="content">
+				<div class="expander-content">
+					<p><a href="https://github.com/alan-turing-institute/DSSG19-HomelessLink-PUBLIC">Implementing Homeless Link research collaborating with QuantumBlack</a></p>
+				</div>
+			</div>
+			<!-- <p>2019 Jun => 2019 Aug</p> -->
+			<button class="collapsible">Using machine learning to improve outcomes for rough sleepers in the UK</button>		
+			<div class="content">
+				<div class="expander-content">
+					<p>
+						Work carried out as a DSSG fellow in 2019. We augmented <a href="https://www.streetlink.org.uk">Homeless Link's platform for members of the public to refer rough sleepers to essential service providers</a> (Pre-print of paper summarising the work and hopefully publication to follow). This work was presented at the DSSG DataFest at the shard in London and was to be presented at <a href="https://datafestival.de">The Munich Data Festival</a> before disruption due to COVID-19.
+						</br>
+						<iframe width="560" height="315" src="https://www.youtube.com/embed/EDCNF_xudDw?start=2773" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+					</p>
+				</div>
+			</div>
 		</div>
-        <h3>Data Science for Social Good</h3>
-		<!-- <p>2019 Oct => Present</p> -->
-		<button class="collapsible">Running the DSSG Fellowship at The Turing</button>		
-		<div class="content">
-			Assisting with the running of the <a href="https://www.turing.ac.uk/collaborate-turing/data-science-social-good">Data Science for Social Good Fellowship in the UK</a> through reviewing project partners spanning Ofsted, World Bank and more. Giving advice to current fellows and helping make evidential studies into impactful implementations.
-		</div>
-		<button class="collapsible">Taking Part in Data Study Groups at The Turing</button>		
-		<div class="content">
-			Fill in.
-		</div>
-		<!-- <p>2019 Sep => Present</p> -->
-		<button class="collapsible">Collaborating with QuantumBlack to connect rough sleepers with essential services in the UK</button>		
-		<div class="content">
-			<a href="https://github.com/alan-turing-institute/DSSG19-HomelessLink-PUBLIC">Implementing Homeless Link research collaborating with QuantumBlack</a></p>
-		</div>
-		<!-- <p>2019 Jun => 2019 Aug</p> -->
-		<button class="collapsible">Using machine learning to improve outcomes for rough sleepers in the UK</button>		
-		<div class="content">
-			Work carried out as a DSSG fellow in 2019. We augmented <a href="https://www.streetlink.org.uk">Homeless Link's platform for members of the public to refer rough sleepers to essential service providers</a> (Pre-print of paper summarising the work and hopefully publication to follow). This work was presented at the DSSG DataFest at the shard in London and was to be presented at <a href="https://datafestival.de">The Munich Data Festival</a> before disruption due to COVID-19.</p>
-			</br>
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/EDCNF_xudDw?start=2773" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-		</div>
-        <h3>Fundamentals of Bayesian Inference</h3>
-		<!-- <p>2019 Dec => Present</p> -->
-		<button class="collapsible">Robustifying Bayesian Inference in the presence of synthetic data to learn more effectively in constrained scenarios</button>		
-		<div class="content">
-			Fill in.
+		<div class="thing">
+			<h3>Fundamentals of Bayesian Inference</h3>
+			<!-- <p>2019 Dec => Present</p> -->
+			<button class="collapsible">Robustifying Bayesian Inference in the presence of synthetic data to learn more effectively in constrained scenarios</button>		
+			<div class="content">
+				<div class="expander-content">
+					<p>Fill in.</p>
+				</div>
+			</div>
 		</div>
 	</div>
     <div class="container", id="experience">
         <h2>My affiliations</h2>
-        PhD Student at the <a href="https://warwick.ac.uk/fac/sci/statistics/">University of Warwick's Department of Statistics</a>, <a href="https://warwick.ac.uk/services/dc/schols_fund/scholarships_and_funding/feuer/">Feuer International Scholar in Artificial Intelligence 2019</a>, <a href="http://www.dssgfellowship.org/people/2019-fellows-mentors-warwick/">Data Science for Social Good Fellow 2019</a>, Visiting Researcher and Data Scientist at <a href="https://www.homeless.org.uk">Homeless Link</a>, Contributor to <a href="https://github.com/TuringLang">Turing.jl (Probabilistic Programming Language)</a>, Collaborative Researcher at <a href="https://www.turing.ac.uk">The Alan Turing Institute</a>, Volunteer Data Scientist at <a href="https://www.datakind.org">DataKind</a>.</p>
+        <p>PhD Student at the <a href="https://warwick.ac.uk/fac/sci/statistics/">University of Warwick's Department of Statistics</a>, <a href="https://warwick.ac.uk/services/dc/schols_fund/scholarships_and_funding/feuer/">Feuer International Scholar in Artificial Intelligence 2019</a>, <a href="http://www.dssgfellowship.org/people/2019-fellows-mentors-warwick/">Data Science for Social Good Fellow 2019</a>, Visiting Researcher and Data Scientist at <a href="https://www.homeless.org.uk">Homeless Link</a>, Contributor to <a href="https://github.com/TuringLang">Turing.jl (Probabilistic Programming Language)</a>, Collaborative Researcher at <a href="https://www.turing.ac.uk">The Alan Turing Institute</a>, Volunteer Data Scientist at <a href="https://www.datakind.org">DataKind</a>.</p>
 	</div>
 	<script>
 		var coll = document.getElementsByClassName("collapsible");
