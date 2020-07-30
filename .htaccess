@@ -1,4 +1,4 @@
 #Force non-www:
 RewriteEngine on
-RewriteCond %{HTTP_HOST} ^www.hwil.de [NC]
+RewriteCond %{HTTPS_HOST} ^www.hwil.de [NC]
 RewriteRule ^(.*)$ https://hwil.de/$1 [L,R=301]
