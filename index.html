@@ -254,14 +254,25 @@
 		colors = paletteGenerator.diffSort(colors, 'Compromise');
   		// background = colors[Math.floor(Math.random() * colors.length)];
 		document.body.style.backgroundColor = colors[1];
-		document.getElementById("container").style.color = colors[2];
-		document.getElementById("collapsible").style.color = colors[3];
+		document.body.style.color = colors[2];
+		var ps = document.getElementsByTagName("p");
+		for(var i=0;i<ps.length;i++)
+		{
+			ps[i].style.color = colors[2];  
+		}
+		var links = document.getElementsByTagName("a");
+		for(var i=0;i<links.length;i++)
+		{
+			if(links[i].href)
+			{
+				links[i].style.color = colors[3];  
+			}
+		}
 
-		var coll = document.getElementsByClassName("collapsible");
-		var i;
-		
-		for (i = 0; i < coll.length; i++) {
-		  	coll[i].addEventListener("click", function() {
+		var colls = document.getElementsByClassName("collapsible");		
+		for (var i = 0; i < colls.length; i++) {
+			colls[i].style.color = colors[3];
+		  	colls[i].addEventListener("click", function() {
 				this.classList.toggle("active");
 				var content = this.nextElementSibling;
 				if (content.style.maxHeight){
