@@ -259,17 +259,21 @@
 
 		console.log(colors);
 
-		bg_rgb = colors[0].rgb();
-		text_rgb = colors[1].rgb();
+		var bg_rgb = colors[0].rgb();
+		var text_rgb = colors[1].rgb();
+		var hue_diff = Math.abs(bg_rgb[0] - text_rgb[0]) + Math.abs(bg_rgb[1] - text_rgb[1]) + Math.abs(bg_rgb[2] - text_rgb[2]);
+		var brightness_diff = Math.abs((bg_rgb[0] * 299 + bg_rgb[1] * 587 + bg_rgb[2] * 114) / 1000 - (text_rgb[0] * 299 + text_rgb[1] * 587 + text_rgb[2] * 114) / 1000);
 
-		if(
-			(Math.abs(bg_rgb[0] - text_rgb[0]) + Math.abs(bg_rgb[1] - text_rgb[1]) + Math.abs(bg_rgb[2] - text_rgb[2])) > 500
-			&& Math.abs((bg_rgb[0] * 299 + bg_rgb[1] * 587 + bg_rgb[2] * 114) / 1000 - (text_rgb[0] * 299 + text_rgb[1] * 587 + text_rgb[2] * 114) / 1000) > 100
-		) {
+		console.log("hue_diff");
+		console.log(hue_diff);
+		console.log("brightness_diff");
+		console.log(brightness_diff);
+
+		if((hue_diff > 500) && (brightness_diff > 100)) {
 			acceptableColours = true;
-			console.log("READABLE!!")
+			console.log("READABLE!!");
 		} else {
-			console.log("NOT READABLE!!")
+			console.log("NOT READABLE!!");
 		}
 
 		// Sort colors by differenciation first
