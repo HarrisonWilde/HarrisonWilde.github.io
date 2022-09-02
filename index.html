@@ -252,20 +252,20 @@
 		colors = paletteGenerator.diffSort(colors, 'Compromise');
   		// background = colors[Math.floor(Math.random() * colors.length)];
 		document.body.style.backgroundColor = colors[1];
-		document.body.style.color = colors[2];
+		// document.body.style.color = colors[2];
 		var ps = document.getElementsByTagName("p");
 		for(var i=0;i<ps.length;i++)
 		{
 			ps[i].style.color = colors[2];  
 		}
-		document.getElementsByTagName("a").style.color = colors[3];
-		// for(var i=0;i<links.length;i++)
-		// {
-		// 	// if(links[i].href)
-		// 	// {
-		// 		links[i].style.color = colors[3];  
-		// 	// }
-		// }
+		var links = document.getElementsByTagName("a").style.color = colors[3];
+		for(var i = 0; i < links.length; i++)
+		{
+			// if(links[i].href)
+			// {
+				links[i].style.color = colors[3];  
+			// }
+		}
 
 		var colls = document.getElementsByClassName("collapsible");		
 		for (var i = 0; i < colls.length; i++) {
