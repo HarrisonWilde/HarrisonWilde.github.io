@@ -246,7 +246,7 @@
 		
 		// while(acceptableColours == false) {
 			var colors = paletteGenerator.generate(
-				5, // Colors
+				2, // Colors
 				function(color){ // This function filters valid colors
 					var hcl = color.hcl();
 					return hcl[0]>=0 && hcl[0]<=360
@@ -256,7 +256,7 @@
 				true, // Using Force Vector instead of k-Means
 				100, // Steps (quality)
 				false, // Ultra precision
-				'Compromise' // Color distance type (colorblindness)
+				'CMC' // Color distance type (colorblindness)
 			);
 
 			var bg_rgb = colors[0].rgb();
@@ -287,7 +287,7 @@
 		// }
 
 		// Sort colors by differenciation first
-		colors = paletteGenerator.diffSort(colors, 'Compromise');
+		colors = paletteGenerator.diffSort(colors, 'Lightness');
   		// background = colors[Math.floor(Math.random() * colors.length)];
 		document.querySelector("meta[name='theme-color']").content = colors[0];
 		document.body.style.backgroundColor = colors[0];
