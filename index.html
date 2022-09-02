@@ -235,19 +235,37 @@
 	<script src="chroma.min.js" type="text/javascript"></script>
 	<script src="iwanthue.js" type="text/javascript"></script>
 	<script>
+		const d = new Date();
+		let hour = d.getHours();
+		if(hour > 20 || hour < 7) {
+			darkMode = true;
+		}
+
+		var acceptableColours = false;
+		
 		var colors = paletteGenerator.generate(
 			3, // Colors
 			function(color){ // This function filters valid colors
 				var hcl = color.hcl();
 				return hcl[0]>=0 && hcl[0]<=360
 				&& hcl[1]>=40 && hcl[1]<=70
-				&& hcl[2]>=15 && hcl[2]<=85;
+				&& hcl[2]>=25 && hcl[2]<=75;
 			},
 			true, // Using Force Vector instead of k-Means
 			100, // Steps (quality)
 			false, // Ultra precision
 			'Compromise' // Color distance type (colorblindness)
 		);
+
+		console.log(color)
+
+
+		// if Math.abs(colors[0] - colors[1])
+
+		// Maximum ((Text R – Background R), (Background R – Text R)) + Maximum ((Text G – Background G), (Background G – Text G)) + Maximum ((Text B – Background B), (Background B – Text B))
+
+		// ((R X 299) + (G X 587) + (B X 114)) / 1000
+		
 		// Sort colors by differenciation first
 		colors = paletteGenerator.diffSort(colors, 'Compromise');
   		// background = colors[Math.floor(Math.random() * colors.length)];
