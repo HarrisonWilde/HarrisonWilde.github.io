@@ -243,9 +243,6 @@
 		}
 		// var acceptableColours = false;
 		// while(acceptableColours == false) {
-		// }
-		// var random_num = Math.random() * 360;
-
 		var colors = paletteGenerator.generate(
 			3, // Colors
 			function(color){ // This function filters valid colors
@@ -263,6 +260,26 @@
 		console.log(colors);
 		// Sort colors by distinction first
 		colors = paletteGenerator.diffSort(colors, 'Default');
+
+		// var rellum1 = calculate_rel_lum(colors[0].rgb())
+		// }
+		// var random_num = Math.random() * 360;
+
+		// function sRGB_to_lumVal(sRGB) {
+		// 	if (sRGB <= 0.03928) {
+		// 		return sRGB / 12.92;
+		// 	} else {
+		// 		return Math.pow((sRGB + 0.055) / 1.055);
+		// 	}
+		// }
+
+		// function calculate_rel_lum(R, G, B) {
+		// 	return 0.2126 * sRGB_to_lumVal(R) + 0.7152 * sRGB_to_lumVal(G) + 0.0722 * sRGB_to_lumVal(B);
+		// }
+
+		// function calculate_contrast_ratio(L1, L2) {
+		// 	return (L1 + 0.05) / (L2 + 0.05)
+		// }
 
 		var bg_rgb = colors[0].rgb();
 		var black_check = 0.2126 * Math.pow(bg_rgb[0] / 255, 2) + 0.7152 * Math.pow(bg_rgb[1] / 255, 2) + 0.0722 * Math.pow(bg_rgb[2] / 255, 2);
