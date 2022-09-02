@@ -23,12 +23,18 @@
 	<title>Harrison Wilde</title>
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
 	<style>
+		:root {
+			--colour: #1e90ff;
+		}
+
 		a {
 			text-decoration: underline;
+			color: var(--colour);
 		}
 
 		.collapsible {
 			font-size: 14px;
+			color: var(--colour);
 			background-color: rgba(228, 0, 0, 0);
 			font-family: Menlo, 'Inconsolata', monospace;
 			overflow-wrap: break-word;
@@ -253,19 +259,10 @@
   		// background = colors[Math.floor(Math.random() * colors.length)];
 		document.body.style.backgroundColor = colors[1];
 		document.body.style.color = colors[2];
-
-		var buttons = document.getElementsByTagName("button");
-		for(var i = 0; i < buttons.length; i++)
-		{
-			// if(links[i].href)
-			// {
-				buttons[i].style.color = colors[3];  
-			// }
-		}
+		document.querySelector(':root').style.setProperty('--colour', colors[3]);
 
 		var colls = document.getElementsByClassName("collapsible");		
 		for(var i = 0; i < colls.length; i++) {
-			colls[i].style.color = colors[3];
 		  	colls[i].addEventListener("click", function() {
 				this.classList.toggle("active");
 				var content = this.nextElementSibling;
