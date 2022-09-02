@@ -244,15 +244,15 @@
 		// var acceptableColours = false;
 		// while(acceptableColours == false) {
 		// }
-
-		var random_num = Math.random() * 360;
+		// var random_num = Math.random() * 360;
 
 		var colors = paletteGenerator.generate(
-			10, // Colors
+			3, // Colors
 			function(color){ // This function filters valid colors
 				var hcl = color.hcl();
 				var rgb = color.rgb();
-				return random_num > 300 ? (hcl[0]>=random_num || hcl[0]<=(random_num-300)) : hcl[0]>=random_num && hcl[0]<=(random_num+60)
+				// return random_num > 300 ? (hcl[0]>=random_num || hcl[0]<=(random_num-300)) : hcl[0]>=random_num && hcl[0]<=(random_num+60)
+				return hcl[0]>=0 && hcl[0]<=360
 				&& hcl[1]>=40 && hcl[1]<=70
 				&& hcl[2]>=15 && hcl[2]<=85;
 			},
@@ -289,7 +289,7 @@
 
 		document.querySelector("meta[name='theme-color']").content = colors[0];
 		document.body.style.backgroundColor = colors[0];
-		document.querySelector(':root').style.setProperty('--colour', colors[9]);
+		document.querySelector(':root').style.setProperty('--colour', colors[2]);
 
 		var colls = document.getElementsByClassName("collapsible");		
 		for(var i = 0; i < colls.length; i++) {
