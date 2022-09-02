@@ -252,9 +252,10 @@
 		);
 		// Sort colors by differenciation first
 		colors = paletteGenerator.diffSort(colors, 'Compromise');
-  		background = colors[Math.floor(Math.random() * colors.length)];
-		document.body.style.backgroundColor = background;
-		document.p.style.color = background;
+  		// background = colors[Math.floor(Math.random() * colors.length)];
+		document.body.style.backgroundColor = colors[1];
+		document.getElementById("p").style.color = colors[2];
+		document.getElementById("collapsible").style.color = colors[3];
 
 		var coll = document.getElementsByClassName("collapsible");
 		var i;
