@@ -254,18 +254,18 @@
 		document.body.style.backgroundColor = colors[1];
 		document.body.style.color = colors[2];
 
-		var links = document.getElementsByClassName("content");
-		for(var i = 0; i < links.length; i++)
+		var buttons = document.getElementsByTagName("button");
+		for(var i = 0; i < buttons.length; i++)
 		{
 			// if(links[i].href)
 			// {
-				links[i].style.color = colors[3];  
+				buttons[i].style.color = colors[3];  
 			// }
 		}
 
 		var colls = document.getElementsByClassName("collapsible");		
 		for(var i = 0; i < colls.length; i++) {
-			// colls[i].style.color = colors[3];
+			colls[i].style.color = colors[3];
 		  	colls[i].addEventListener("click", function() {
 				this.classList.toggle("active");
 				var content = this.nextElementSibling;
