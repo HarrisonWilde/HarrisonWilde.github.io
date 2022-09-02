@@ -25,17 +25,17 @@
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
 	<style>
 		:root {
-			--colour: #1e90ff;
+			--color: #1e90ff;
 		}
 
 		a {
 			text-decoration: underline;
-			color: var(--colour);
+			color: var(--color);
 		}
 
 		.collapsible {
 			font-size: 14px;
-			color: var(--colour);
+			color: var(--color);
 			background-color: rgba(228, 0, 0, 0);
 			font-family: Menlo, 'Inconsolata', monospace;
 			overflow-wrap: break-word;
@@ -241,8 +241,8 @@
 		if(hour > 20 || hour < 7) {
 			darkMode = true;
 		}
-		// var acceptableColours = false;
-		// while(acceptableColours == false) {
+		// var acceptablecolors = false;
+		// while(acceptablecolors == false) {
 		var colors = paletteGenerator.generate(
 			3, // Colors
 			function(color){ // This function filters valid colors
@@ -258,28 +258,25 @@
 			'Default' // Color distance type (colorblindness)
 		);
 		console.log(colors);
-		// Sort colors by distinction first
-		colors = paletteGenerator.diffSort(colors, 'Default');
+		
+		var colorLumDict = Object.fromEntries(colors.map(color => [color.luminance(), color]));
+		var colorOrder = Object.keys(colorLumDict);
+		colorOrder.sort(function(a, b){
+			return colorLumDict[a].localeCompare(colorLumDict[b]);
+		}).reverse();
 
-		// var rellum1 = calculate_rel_lum(colors[0].rgb())
+		function calculate_relative_luminance(L1, L2) {
+			return (L1 + 0.05) / (L2 + 0.05);
+		}
+
+		bg_fg_rel_lum = calculate_relative_luminance(colorLumDict[colorOrder[0]], colorLumDict[colorOrder[1]]);
+		bg_link_rel_lum = calculate_relative_luminance(colorLumDict[colorOrder[0]], colorLumDict[colorOrder[2]]);
+
+		console.log(bg_fg_rel_lum);
+		console.log(bg_link_rel_lum);
+
 		// }
 		// var random_num = Math.random() * 360;
-
-		// function sRGB_to_lumVal(sRGB) {
-		// 	if (sRGB <= 0.03928) {
-		// 		return sRGB / 12.92;
-		// 	} else {
-		// 		return Math.pow((sRGB + 0.055) / 1.055);
-		// 	}
-		// }
-
-		// function calculate_rel_lum(R, G, B) {
-		// 	return 0.2126 * sRGB_to_lumVal(R) + 0.7152 * sRGB_to_lumVal(G) + 0.0722 * sRGB_to_lumVal(B);
-		// }
-
-		// function calculate_contrast_ratio(L1, L2) {
-		// 	return (L1 + 0.05) / (L2 + 0.05)
-		// }
 
 		var bg_rgb = colors[0].rgb();
 		var black_check = 0.2126 * Math.pow(bg_rgb[0] / 255, 2) + 0.7152 * Math.pow(bg_rgb[1] / 255, 2) + 0.0722 * Math.pow(bg_rgb[2] / 255, 2);
@@ -298,7 +295,7 @@
 		// console.log("brightness_diff");
 		// console.log(brightness_diff);
 		// if((hue_diff > 400) && (brightness_diff > 100)) {
-		// 	acceptableColours = true;
+		// 	acceptablecolors = true;
 		// 	console.log("READABLE!!");
 		// } else {
 		// 	console.log("NOT READABLE!!");
@@ -306,7 +303,7 @@
 
 		document.querySelector("meta[name='theme-color']").content = colors[0];
 		document.body.style.backgroundColor = colors[0];
-		document.querySelector(':root').style.setProperty('--colour', colors[2]);
+		document.querySelector(':root').style.setProperty('--color', colors[2]);
 
 		var colls = document.getElementsByClassName("collapsible");		
 		for(var i = 0; i < colls.length; i++) {
