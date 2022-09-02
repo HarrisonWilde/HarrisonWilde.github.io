@@ -246,7 +246,7 @@
 		
 		// while(acceptableColours == false) {
 			var colors = paletteGenerator.generate(
-				2, // Colors
+				5, // Colors
 				function(color){ // This function filters valid colors
 					var hcl = color.hcl();
 					return hcl[0]>=0 && hcl[0]<=360
