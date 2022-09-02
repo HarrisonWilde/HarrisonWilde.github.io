@@ -250,19 +250,19 @@
 			3, // Colors
 			function(color){ // This function filters valid colors
 				var hcl = color.hcl();
-				var rgb = color.rgb();
 				// return random_num > 300 ? (hcl[0]>=random_num || hcl[0]<=(random_num-300)) : hcl[0]>=random_num && hcl[0]<=(random_num+60)
 				return hcl[0]>=0 && hcl[0]<=360
 				&& hcl[1]>=40 && hcl[1]<=70
 				&& hcl[2]>=15 && hcl[2]<=85;
 			},
 			true, // Using Force Vector instead of k-Means
-			100, // Steps (quality)
+			50, // Steps (quality)
 			false, // Ultra precision
-			'Compromise' // Color distance type (colorblindness)
+			'Default' // Color distance type (colorblindness)
 		);
+		console.log(colors)
 		// Sort colors by distinction first
-		colors = paletteGenerator.diffSort(colors, 'Compromise');
+		colors = paletteGenerator.diffSort(colors, 'Default');
 
 		var bg_rgb = colors[0].rgb();
 		var black_check = 0.2126 * Math.pow(bg_rgb[0] / 255, 2) + 0.7152 * Math.pow(bg_rgb[1] / 255, 2) + 0.0722 * Math.pow(bg_rgb[2] / 255, 2);
