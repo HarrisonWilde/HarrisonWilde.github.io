@@ -254,7 +254,7 @@
 				var rgb = color.rgb();
 				return random_num > 300 ? (hcl[0]>=random_num || hcl[0]<=(random_num-300)) : hcl[0]>=random_num && hcl[0]<=(random_num+60)
 				&& hcl[1]>=40 && hcl[1]<=70
-				&& hcl[2]>=25 && hcl[2]<=75;
+				&& hcl[2]>=15 && hcl[2]<=85;
 			},
 			true, // Using Force Vector instead of k-Means
 			100, // Steps (quality)
