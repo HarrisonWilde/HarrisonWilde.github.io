@@ -227,17 +227,32 @@
 		</div>
 	</div>
     <div class="container", id="experience">
-        <h2>My affiliations</h2>
         <p>
-			PhD Student at the <a href="https://warwick.ac.uk/fac/sci/statistics/staff/research_students/wilde" target="_blank">University of Warwick's Department of Statistics</a> and <a href="http://www.stats.ox.ac.uk">Chris Holmes' Lab at the University of Oxford</a>, <a href="https://warwick.ac.uk/services/dc/schols_fund/scholarships_and_funding/feuer/" target="_blank">Feuer International Scholar in Artificial Intelligence 2019</a>, Collaborator at <a href="https://www.turing.ac.uk/people/external-researchers/harrison-wilde" target="_blank">The Alan Turing Institute</a>, Team Member and Contributor to the <a href="https://github.com/TuringLang" target="_blank">Turing.jl (Probabilistic Programming Language)</a>, Volunteer Data Scientist at <a href="https://www.datakind.org" target="_blank">DataKind</a>.
+			I am a PhD Student at the <a href="https://warwick.ac.uk/fac/sci/statistics/staff/research_students/wilde" target="_blank">University of Warwick's Department of Statistics</a> and a visiting member of <a href="http://www.stats.ox.ac.uk">Chris Holmes' Lab at the University of Oxford</a>, 2019's <a href="https://warwick.ac.uk/services/dc/schols_fund/scholarships_and_funding/feuer/" target="_blank">Feuer International Scholar in Artificial Intelligence</a>, a collaborator at <a href="https://www.turing.ac.uk/people/external-researchers/harrison-wilde" target="_blank">The Alan Turing Institute</a>, a team member and contributor to the <a href="https://github.com/TuringLang" target="_blank">Turing.jl (Probabilistic Programming Language)</a>, and a volunteer Data Scientist at <a href="https://www.datakind.org" target="_blank">DataKind</a>.
 		</p>
 		<p>
-			Previously, Research Scientist at <a href="https://cortex.twitter.com" target="_blank">Twitter's Cortex Lab</a>, Research Scientist at <a href="https://pumas.ai" target="_blank">Pumas-AI</a>, Fellow of the <a href="http://www.dssgfellowship.org/people/2019-fellows-mentors-warwick/" target="_blank">Data Science for Social Good Foundation</a>, Visiting Researcher and Data Scientist at <a href="https://www.homeless.org.uk" target="_blank">Homeless Link</a>.
+			Previously I was a Research Scientist at <a href="https://cortex.twitter.com" target="_blank">Twitter's Cortex Lab</a>, a Research Scientist at <a href="https://pumas.ai" target="_blank">Pumas-AI</a>, a Fellow of the <a href="http://www.dssgfellowship.org/people/2019-fellows-mentors-warwick/" target="_blank">Data Science for Social Good Foundation</a>, and a Visiting Researcher and Data Scientist at <a href="https://www.homeless.org.uk" target="_blank">Homeless Link</a>.
 		</p>
 	</div>
 	<script>
-		var colors = ['#111','#999','#607'],
-  		background = colors[Math.floor(Math.random() * colors.length)];
+		var iwanthue = require('iwanthue');
+		// Generate colors (as Chroma.js objects)
+		var colors = iwanthue(
+			3, // Colors
+			function(color){ // This function filters valid colors
+				var hcl = color.hcl();
+				return hcl[0]>=0 && hcl[0]<=360
+				&& hcl[1]>=40 && hcl[1]<=70
+				&& hcl[2]>=15 && hcl[2]<=85;
+			},
+			true, // Using Force Vector instead of k-Means
+			50, // Steps (quality)
+			false, // Ultra precision
+			'Compromise' // Color distance type (colorblindness)
+		);
+		// Sort colors by differenciation first
+		colors = paletteGenerator.diffSort(colors, 'Compromise');
+  		background = palette[Math.floor(Math.random() * palette.length)];
 		document.body.style.backgroundColor = background;
 
 		var coll = document.getElementsByClassName("collapsible");
