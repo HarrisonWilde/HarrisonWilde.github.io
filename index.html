@@ -258,16 +258,13 @@
 			'Default' // Color distance type (colorblindness)
 		);
 		console.log(colors);
+		var colorsAndLums = colors.map(function(c) {
+			return {color: c, luminance: c.luminance()}
+		})
+		console.log(colorsAndLums);
+		colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; }).reverse();
+		console.log(colorsAndLums);
 		
-		var colorLumDict = Object.fromEntries(colors.map(color => [color.luminance(), color]));
-
-		console.log(colorLumDict);
-
-		var colorOrder = Object.keys(colorLumDict);
-		colorOrder.sort(function(a, b){
-			return colorLumDict[a].localeCompare(colorLumDict[b]);
-		}).reverse();
-
 		function calculate_relative_luminance(L1, L2) {
 			return (L1 + 0.05) / (L2 + 0.05);
 		}
