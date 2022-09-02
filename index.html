@@ -258,14 +258,14 @@
 		{
 			ps[i].style.color = colors[2];  
 		}
-		var links = document.getElementsByTagName("a");
-		for(var i=0;i<links.length;i++)
-		{
-			// if(links[i].href)
-			// {
-				links[i].style.color = colors[3];  
-			// }
-		}
+		document.getElementsByTagName("a").style.color = colors[3];
+		// for(var i=0;i<links.length;i++)
+		// {
+		// 	// if(links[i].href)
+		// 	// {
+		// 		links[i].style.color = colors[3];  
+		// 	// }
+		// }
 
 		var colls = document.getElementsByClassName("collapsible");		
 		for (var i = 0; i < colls.length; i++) {
