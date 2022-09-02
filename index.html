@@ -256,7 +256,7 @@
 				true, // Using Force Vector instead of k-Means
 				100, // Steps (quality)
 				false, // Ultra precision
-				'CMC' // Color distance type (colorblindness)
+				'Lightness' // Color distance type (colorblindness)
 			);
 
 			var bg_rgb = colors[0].rgb();
@@ -287,7 +287,7 @@
 		// }
 
 		// Sort colors by differenciation first
-		colors = paletteGenerator.diffSort(colors, 'Lightness');
+		colors = paletteGenerator.diffSort(colors, 'CMC');
   		// background = colors[Math.floor(Math.random() * colors.length)];
 		document.querySelector("meta[name='theme-color']").content = colors[0];
 		document.body.style.backgroundColor = colors[0];
