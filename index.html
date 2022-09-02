@@ -289,7 +289,7 @@
 		// Sort colors by differenciation first
 		colors = paletteGenerator.diffSort(colors, 'Compromise');
   		// background = colors[Math.floor(Math.random() * colors.length)];
-		document.head.style.backgroundColor = colors[0];
+		document.querySelector("meta[name='theme-color']").content = colors[0];
 		document.body.style.backgroundColor = colors[0];
 		// document.body.style.color = colors[1];
 		document.querySelector(':root').style.setProperty('--colour', colors[1]);
