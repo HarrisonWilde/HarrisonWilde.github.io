@@ -234,10 +234,10 @@
 			Previously I was a Research Scientist at <a href="https://cortex.twitter.com" target="_blank">Twitter's Cortex Lab</a>, a Research Scientist at <a href="https://pumas.ai" target="_blank">Pumas-AI</a>, a Fellow of the <a href="http://www.dssgfellowship.org/people/2019-fellows-mentors-warwick/" target="_blank">Data Science for Social Good Foundation</a>, and a Visiting Researcher and Data Scientist at <a href="https://www.homeless.org.uk" target="_blank">Homeless Link</a>.
 		</p>
 	</div>
+	<script src="chroma.js" type="text/javascript"></script>
+	<script src="iwanthue.js" type="text/javascript"></script>
 	<script>
-		var iwanthue = require('iwanthue');
-		// Generate colors (as Chroma.js objects)
-		var colors = iwanthue(
+		var colors = paletteGenerator.generate(
 			3, // Colors
 			function(color){ // This function filters valid colors
 				var hcl = color.hcl();
