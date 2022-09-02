@@ -245,7 +245,7 @@
 		
 		// while(acceptableColours == false) {
 			var colors = paletteGenerator.generate(
-				3, // Colors
+				2, // Colors
 				function(color){ // This function filters valid colors
 					var hcl = color.hcl();
 					return hcl[0]>=0 && hcl[0]<=360
@@ -259,6 +259,12 @@
 			);
 
 			var bg_rgb = colors[0].rgb();
+			if(0.2126 * Math.pow(bg_rgb[0], 2.2) + 0.7152 * pow(bg_rgb[1], 2.2) + 0.0722 * pow(bg_rgb[2], 2.2) > 0.5) {
+				document.body.style.color = "black";
+			} else {
+				document.body.style.color = "white";
+			}
+
 			var text_rgb = colors[1].rgb();
 
 			var hue_diff = Math.abs(bg_rgb[0] - text_rgb[0]) + Math.abs(bg_rgb[1] - text_rgb[1]) + Math.abs(bg_rgb[2] - text_rgb[2]);
@@ -281,8 +287,9 @@
 		colors = paletteGenerator.diffSort(colors, 'Compromise');
   		// background = colors[Math.floor(Math.random() * colors.length)];
 		document.body.style.backgroundColor = colors[0];
-		document.body.style.color = colors[1];
-		document.querySelector(':root').style.setProperty('--colour', colors[2]);
+		// document.body.style.color = colors[1];
+		document.querySelector(':root').style.setProperty('--colour', colors[1]);
+		// document.querySelector(':root').style.setProperty('--colour', colors[2]);
 
 		var colls = document.getElementsByClassName("collapsible");		
 		for(var i = 0; i < colls.length; i++) {
