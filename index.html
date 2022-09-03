@@ -256,7 +256,7 @@
 			true, // Using Force Vector instead of k-Means
 			50, // Steps (quality)
 			false, // Ultra precision
-			'Default' // Color distance type (colorblindness)
+			'Compromise' // Color distance type (colorblindness)
 		);
 		var colorsAndLums = colors.map(function(c) {
 			return {color: c, luminance: c.luminance()}
@@ -336,7 +336,7 @@
 			console.log("Original FG-BG rel luminance.");
 			console.log(fg_rel_lum);
 
-			if (fg_rel_lum < 4.5) {
+			if (fg_rel_lum < 5.5) {
 				colorsAndLums[1].luminance = ((colorsAndLums[0].luminance + 0.05) / 4.5) - 0.05;
 				colorsAndLums[1].color = colorsAndLums[1].color.luminance(colorsAndLums[1].luminance);
 				fg_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[1].luminance);
@@ -351,7 +351,7 @@
 			console.log("Original Link-BG rel luminance.");
 			console.log(link_rel_lum);
 
-			if (fg_rel_lum < 4.5) {
+			if (fg_rel_lum < 5.5) {
 				colorsAndLums[2].luminance = ((colorsAndLums[0].luminance + 0.05) / 4.5) - 0.05;
 				colorsAndLums[2].color = colorsAndLums[2].color.luminance(colorsAndLums[2].luminance);
 				link_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[2].luminance);
