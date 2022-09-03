@@ -297,25 +297,37 @@
 			colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; }).reverse();
 
 			// For light mode, we first ensure the background colour's luminance is >= 0.6
+			console.log("Original BG luminance.");
 			console.log(colorsAndLums[0].luminance);
 			if (colorsAndLums[0].luminance < 0.6) {
 				colorsAndLums[0].color = colorsAndLums[0].color.luminance(0.6);
 				colorsAndLums[0].luminance = 0.6;
 			}
+			console.log("Adjusted BG luminance.");
+			console.log(colorsAndLums[0].luminance);
 
 			fg_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[1].luminance);
 
+			console.log("Original FG luminance.");
+			console.log(colorsAndLums[1].luminance);
+			console.log("Original FG-BG rel luminance.");
 			console.log(fg_rel_lum);
 
 			if (fg_rel_lum < 4.5) {
 				colorsAndLums[0].luminance = (4.5 * (colorsAndLums[1].luminance + 0.05) - 0.05)
 				colorsAndLums[0].color = colorsAndLums[0].color.luminance(colorsAndLums[0].luminance);
 				fg_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[1].luminance);
+				console.log("Adjusted FG luminance.");
+				console.log(colorsAndLums[1].luminance);
+				console.log("Adjusted FG-BG rel luminance.");
 				console.log(fg_rel_lum);
 			}
 
 			link_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[2].luminance);
 
+			console.log("Links luminance.");
+			console.log(colorsAndLums[2].luminance);
+			console.log("Links-BG rel luminance.");
 			console.log(link_rel_lum);
 			console.log(colorsAndLums);
 		}
