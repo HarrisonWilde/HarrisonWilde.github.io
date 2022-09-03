@@ -250,7 +250,7 @@
 				// return random_num > 300 ? (hcl[0]>=random_num || hcl[0]<=(random_num-300)) : hcl[0]>=random_num && hcl[0]<=(random_num+60)
 				return hcl[0]>=0 && hcl[0]<=360
 				&& hcl[1]>=40 && hcl[1]<=70
-				&& hcl[2]>=15 && hcl[2]<=85;
+				&& hcl[2]>=10 && hcl[2]<=90;
 			},
 			true, // Using Force Vector instead of k-Means
 			50, // Steps (quality)
@@ -268,11 +268,27 @@
 			return (L1 + 0.05) / (L2 + 0.05);
 		}
 
+		x = (4.5 * (colorsAndLums[0].luminance + 0.05) - 0.05) / colorsAndLums[1].luminance
+
 		fg_rel_lum = calculate_relative_luminance(colorsAndLums[1].luminance, colorsAndLums[0].luminance);
 		link_rel_lum = calculate_relative_luminance(colorsAndLums[2].luminance, colorsAndLums[0].luminance);
 
 		console.log(fg_rel_lum);
 		console.log(link_rel_lum);
+
+		if (fg_rel_lum < 4.5) {
+			colorsAndLums[1].luminance = (4.5 * (colorsAndLums[0].luminance + 0.05) - 0.05)
+			colorsAndLums[1].color = colorsAndLums[1].color.luminance(colorsAndLums[1].luminance)
+			fg_rel_lum = calculate_relative_luminance(colorsAndLums[1].luminance, colorsAndLums[0].luminance);
+			console.log(fg_rel_lum);
+		}
+
+		if (link_rel_lum < 4.5) {
+			colorsAndLums[2].luminance = (4.5 * (colorsAndLums[0].luminance + 0.05) - 0.05)
+			colorsAndLums[2].color = colorsAndLums[2].color.luminance(colorsAndLums[2].luminance)
+			link_rel_lum = calculate_relative_luminance(colorsAndLums[2].luminance, colorsAndLums[0].luminance);
+			console.log(link_rel_lum);
+		}
 
 		document.body.style.color = colorsAndLums[1].color;
 
