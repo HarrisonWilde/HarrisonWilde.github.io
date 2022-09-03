@@ -294,9 +294,10 @@
 		} else {
 
 			console.log("Dark Mode is OFF");
-			colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; }).reverse();
 
-			console.log(colorsAndLums);
+			// For dark mode, we first ensure the background colours relative luminance is < 0.1
+			console.log(colorsAndLums[0].luminance);
+			colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; }).reverse();
 
 			fg_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[1].luminance);
 
@@ -312,7 +313,6 @@
 			link_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[2].luminance);
 
 			console.log(link_rel_lum);
-
 			console.log(colorsAndLums);
 		}
 
