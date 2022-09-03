@@ -257,37 +257,63 @@
 			false, // Ultra precision
 			'Default' // Color distance type (colorblindness)
 		);
-		console.log(colors);
 		var colorsAndLums = colors.map(function(c) {
 			return {color: c, luminance: c.luminance()}
 		})
-		colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; });
 		console.log(colorsAndLums);
 
 		function calculate_relative_luminance(L1, L2) {
 			return (L1 + 0.05) / (L2 + 0.05);
 		}
 
-		x = (4.5 * (colorsAndLums[0].luminance + 0.05) - 0.05) / colorsAndLums[1].luminance
+		if(darkMode) {
 
-		fg_rel_lum = calculate_relative_luminance(colorsAndLums[1].luminance, colorsAndLums[0].luminance);
-		link_rel_lum = calculate_relative_luminance(colorsAndLums[2].luminance, colorsAndLums[0].luminance);
+			console.log("Dark Mode is ON");
+			colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; });
 
-		console.log(fg_rel_lum);
-		console.log(link_rel_lum);
-
-		if (fg_rel_lum < 4.5) {
-			colorsAndLums[1].luminance = (4.5 * (colorsAndLums[0].luminance + 0.05) - 0.05)
-			colorsAndLums[1].color = colorsAndLums[1].color.luminance(colorsAndLums[1].luminance)
 			fg_rel_lum = calculate_relative_luminance(colorsAndLums[1].luminance, colorsAndLums[0].luminance);
-			console.log(fg_rel_lum);
-		}
-
-		if (link_rel_lum < 4.5) {
-			colorsAndLums[2].luminance = (4.5 * (colorsAndLums[0].luminance + 0.05) - 0.05)
-			colorsAndLums[2].color = colorsAndLums[2].color.luminance(colorsAndLums[2].luminance)
 			link_rel_lum = calculate_relative_luminance(colorsAndLums[2].luminance, colorsAndLums[0].luminance);
+
+			console.log(fg_rel_lum);
 			console.log(link_rel_lum);
+
+			if (fg_rel_lum < 4.5) {
+				colorsAndLums[1].luminance = (4.5 * (colorsAndLums[0].luminance + 0.05) - 0.05)
+				colorsAndLums[1].color = colorsAndLums[1].color.luminance(colorsAndLums[1].luminance)
+				fg_rel_lum = calculate_relative_luminance(colorsAndLums[1].luminance, colorsAndLums[0].luminance);
+				console.log(fg_rel_lum);
+			}
+
+			if (link_rel_lum < 4.5) {
+				colorsAndLums[2].luminance = (4.5 * (colorsAndLums[0].luminance + 0.05) - 0.05)
+				colorsAndLums[2].color = colorsAndLums[2].color.luminance(colorsAndLums[2].luminance)
+				link_rel_lum = calculate_relative_luminance(colorsAndLums[2].luminance, colorsAndLums[0].luminance);
+				console.log(link_rel_lum);
+			}
+		} else {
+
+			console.log("Dark Mode is OFF");
+			colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; }).reverse();
+
+			fg_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[1].luminance);
+			link_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[2].luminance);
+
+			console.log(fg_rel_lum);
+			console.log(link_rel_lum);
+
+			if (fg_rel_lum < 4.5) {
+				colorsAndLums[1].luminance = (4.5 * (colorsAndLums[0].luminance + 0.05) - 0.05)
+				colorsAndLums[1].color = colorsAndLums[1].color.luminance(colorsAndLums[1].luminance)
+				fg_rel_lum = calculate_relative_luminance(colorsAndLums[1].luminance, colorsAndLums[0].luminance);
+				console.log(fg_rel_lum);
+			}
+
+			if (link_rel_lum < 4.5) {
+				colorsAndLums[2].luminance = (4.5 * (colorsAndLums[0].luminance + 0.05) - 0.05)
+				colorsAndLums[2].color = colorsAndLums[2].color.luminance(colorsAndLums[2].luminance)
+				link_rel_lum = calculate_relative_luminance(colorsAndLums[2].luminance, colorsAndLums[0].luminance);
+				console.log(link_rel_lum);
+			}
 		}
 
 		document.body.style.color = colorsAndLums[1].color;
