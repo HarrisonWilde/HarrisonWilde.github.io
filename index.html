@@ -296,19 +296,24 @@
 			console.log("Dark Mode is OFF");
 			colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; }).reverse();
 
+			console.log(colorsAndLums);
+
 			fg_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[1].luminance);
 
 			console.log(fg_rel_lum);
 
 			if (fg_rel_lum < 4.5) {
 				colorsAndLums[0].luminance = (4.5 * (colorsAndLums[1].luminance + 0.05) - 0.05)
-				colorsAndLums[0].color = colorsAndLums[0].color.luminance(colorsAndLums[0].luminance)
+				colorsAndLums[0].color = colorsAndLums[0].color.luminance(colorsAndLums[0].luminance);
+				fg_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[1].luminance);
+				console.log(fg_rel_lum);
 			}
 
 			link_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[2].luminance);
 
 			console.log(link_rel_lum);
 
+			console.log(colorsAndLums);
 		}
 
 		document.body.style.color = colorsAndLums[1].color;
