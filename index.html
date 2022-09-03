@@ -318,12 +318,12 @@
 			console.log("Dark Mode is OFF");
 			colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; }).reverse();
 
-			// For light mode, we first ensure the background colour's luminance is >= 0.55
+			// For light mode, we first ensure the background colour's luminance is >= 0.57
 			console.log("Original BG luminance.");
 			console.log(colorsAndLums[0].luminance);
-			if (colorsAndLums[0].luminance < 0.55) {
-				colorsAndLums[0].color = colorsAndLums[0].color.luminance(0.55);
-				colorsAndLums[0].luminance = 0.55;
+			if (colorsAndLums[0].luminance < 0.57) {
+				colorsAndLums[0].color = colorsAndLums[0].color.luminance(0.57);
+				colorsAndLums[0].luminance = 0.57;
 			}
 			console.log("Adjusted BG luminance.");
 			console.log(colorsAndLums[0].luminance);
