@@ -236,14 +236,18 @@
 	<script src="chroma.min.js" type="text/javascript"></script>
 	<script src="iwanthue.js" type="text/javascript"></script>
 	<script>
+
 		const d = new Date();
 		let hour = d.getHours();
 		var darkMode = false;
 		if(hour > 20 || hour < 7) {
 			darkMode = true;
 		}
-		// var acceptablecolors = false;
-		// while(acceptablecolors == false) {
+
+		function calculate_relative_luminance(L1, L2) {
+			return (L1 + 0.05) / (L2 + 0.05);
+		}
+
 		var colors = paletteGenerator.generate(
 			3, // Colors
 			function(color){ // This function filters valid colors
@@ -254,7 +258,7 @@
 				&& hcl[2]>=10 && hcl[2]<=90;
 			},
 			true, // Using Force Vector instead of k-Means
-			50, // Steps (quality)
+			100, // Steps (quality)
 			false, // Ultra precision
 			'Compromise' // Color distance type (colorblindness)
 		);
@@ -262,21 +266,22 @@
 			return {color: c, luminance: c.luminance()}
 		})
 
-		function calculate_relative_luminance(L1, L2) {
-			return (L1 + 0.05) / (L2 + 0.05);
-		}
-
 		if(darkMode == true) {
 
 			console.log("Dark Mode is ON");
+
+			// Sort in order of luminance ascending, such that the luminance of colorsAndLums[0] is the lowest of the three
 			colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; });
 
-			// For dark mode, we first ensure the background colour's luminance is < 0.15
+			var maxBGLum = 0.15;
+			var minRelLum = 5;
+
+			// For dark mode, we first ensure the background colour's luminance is < {maxBGLum}
 			console.log("Original BG luminance.");
 			console.log(colorsAndLums[0].luminance);
-			if (colorsAndLums[0].luminance >= 0.15) {
-				colorsAndLums[0].color = colorsAndLums[0].color.luminance(0.15);
-				colorsAndLums[0].luminance = 0.15;
+			if (colorsAndLums[0].luminance >= maxBGLum) {
+				colorsAndLums[0].color = colorsAndLums[0].color.luminance(maxBGLum);
+				colorsAndLums[0].luminance = maxBGLum;
 			}
 			console.log("Adjusted BG luminance.");
 			console.log(colorsAndLums[0].luminance);
@@ -289,8 +294,9 @@
 			console.log("Original FG-BG rel luminance.");
 			console.log(fg_rel_lum);
 
-			if (fg_rel_lum < 5) {
-				colorsAndLums[1].luminance = (5 * (colorsAndLums[0].luminance + 0.05) - 0.05);
+			// If the background-foreground relative luminance is too low, the colours will be hard to distinguish, in this case, set the luminance of the foreground such that the rel lum is at least {minRelLum}
+			if (fg_rel_lum < minRelLum) {
+				colorsAndLums[1].luminance = (minRelLum * (colorsAndLums[0].luminance + 0.05) - 0.05);
 				colorsAndLums[1].color = colorsAndLums[1].color.luminance(colorsAndLums[1].luminance);
 				fg_rel_lum = calculate_relative_luminance(colorsAndLums[1].luminance, colorsAndLums[0].luminance);
 				console.log("Adjusted FG luminance.");
@@ -304,8 +310,8 @@
 			console.log("Original Link-BG rel luminance.");
 			console.log(link_rel_lum);
 
-			if (link_rel_lum < 5) {
-				colorsAndLums[2].luminance = (5 * (colorsAndLums[0].luminance + 0.05) - 0.05);
+			if (link_rel_lum < minRelLum) {
+				colorsAndLums[2].luminance = (minRelLum * (colorsAndLums[0].luminance + 0.05) - 0.05);
 				colorsAndLums[2].color = colorsAndLums[2].color.luminance(colorsAndLums[2].luminance);
 				link_rel_lum = calculate_relative_luminance(colorsAndLums[2].luminance, colorsAndLums[0].luminance);
 				console.log("Adjusted Link luminance.");
@@ -316,14 +322,19 @@
 		} else {
 
 			console.log("Dark Mode is OFF");
+
+			// Sort in order of luminance descending, such that the luminance of colorsAndLums[0] is the highest of the three
 			colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; }).reverse();
 
-			// For light mode, we first ensure the background colour's luminance is >= 0.57
+			var minBGLum = 0.57;
+			var minRelLum = 5.5;
+
+			// For light mode, we first ensure the background colour's luminance is >= {maxBGLum}
 			console.log("Original BG luminance.");
 			console.log(colorsAndLums[0].luminance);
-			if (colorsAndLums[0].luminance < 0.57) {
-				colorsAndLums[0].color = colorsAndLums[0].color.luminance(0.57);
-				colorsAndLums[0].luminance = 0.57;
+			if (colorsAndLums[0].luminance < minBGLum) {
+				colorsAndLums[0].color = colorsAndLums[0].color.luminance(minBGLum);
+				colorsAndLums[0].luminance = minBGLum;
 			}
 			console.log("Adjusted BG luminance.");
 			console.log(colorsAndLums[0].luminance);
@@ -336,8 +347,9 @@
 			console.log("Original FG-BG rel luminance.");
 			console.log(fg_rel_lum);
 
-			if (fg_rel_lum < 5.5) {
-				colorsAndLums[1].luminance = ((colorsAndLums[0].luminance + 0.05) / 5.5) - 0.05;
+			// If the foreground-background relative luminance is too low, the colours will be hard to distinguish, in this case, set the luminance of the foreground such that the rel lum is at least {minRelLum}
+			if (fg_rel_lum < minRelLum) {
+				colorsAndLums[1].luminance = ((colorsAndLums[0].luminance + 0.05) / minRelLum) - 0.05;
 				colorsAndLums[1].color = colorsAndLums[1].color.luminance(colorsAndLums[1].luminance);
 				fg_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[1].luminance);
 				console.log("Adjusted FG luminance.");
@@ -351,8 +363,8 @@
 			console.log("Original Link-BG rel luminance.");
 			console.log(link_rel_lum);
 
-			if (fg_rel_lum < 5.5) {
-				colorsAndLums[2].luminance = ((colorsAndLums[0].luminance + 0.05) / 5.5) - 0.05;
+			if (fg_rel_lum < minRelLum) {
+				colorsAndLums[2].luminance = ((colorsAndLums[0].luminance + 0.05) / minRelLum) - 0.05;
 				colorsAndLums[2].color = colorsAndLums[2].color.luminance(colorsAndLums[2].luminance);
 				link_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[2].luminance);
 				console.log("Adjusted Link luminance.");
@@ -365,32 +377,6 @@
 
 		console.log(colorsAndLums);
 		document.body.style.color = colorsAndLums[1].color;
-
-		// }
-		// var random_num = Math.random() * 360;
-
-		// var bg_rgb = colorsAndLums[0].color.rgb();
-		// var black_check = 0.2126 * Math.pow(bg_rgb[0] / 255, 2) + 0.7152 * Math.pow(bg_rgb[1] / 255, 2) + 0.0722 * Math.pow(bg_rgb[2] / 255, 2);
-		// console.log(black_check);
-		// if(black_check > 0.5) {
-		// 	document.body.style.color = "black";
-		// } else {
-		// 	document.body.style.color = "white";
-		// }
-
-		// var text_rgb = colors[1].rgb();
-		// var hue_diff = Math.abs(bg_rgb[0] - text_rgb[0]) + Math.abs(bg_rgb[1] - text_rgb[1]) + Math.abs(bg_rgb[2] - text_rgb[2]);
-		// var brightness_diff = Math.abs((bg_rgb[0] * 299 + bg_rgb[1] * 587 + bg_rgb[2] * 114) / 1000 - (text_rgb[0] * 299 + text_rgb[1] * 587 + text_rgb[2] * 114) / 1000);
-		// console.log("hue_diff");
-		// console.log(hue_diff);
-		// console.log("brightness_diff");
-		// console.log(brightness_diff);
-		// if((hue_diff > 400) && (brightness_diff > 100)) {
-		// 	acceptablecolors = true;
-		// 	console.log("READABLE!!");
-		// } else {
-		// 	console.log("NOT READABLE!!");
-		// }
 
 		document.querySelector("meta[name='theme-color']").content = colorsAndLums[0].color;
 		document.body.style.backgroundColor = colorsAndLums[0].color;
