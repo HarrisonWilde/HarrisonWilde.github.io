@@ -261,7 +261,7 @@
 		var colorsAndLums = colors.map(function(c) {
 			return {color: c, luminance: c.luminance()}
 		})
-		colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; }).reverse();
+		colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; });
 		console.log(colorsAndLums);
 
 		function calculate_relative_luminance(L1, L2) {
