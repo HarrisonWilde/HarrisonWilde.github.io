@@ -98,7 +98,6 @@
 			text-align: left;
 		}
 		.active, .collapsible:hover {
-			/* color: rgb(155, 155, 255); */
 			text-decoration: underline;
 			cursor: pointer;
 		}
@@ -112,13 +111,6 @@
 			content: "\2212";
 		}
 
-		.content {
-			padding-left: 2em;
-			max-height: 0;
-			overflow: hidden;
-			transition: max-height 0.2s ease-out;
-		}
-
 		.expander-content {
 			padding-top: 1em;
 			padding-bottom: 1em;
@@ -126,26 +118,6 @@
 
 		.thing {
 			margin-bottom: 1.5em;
-		}
-
-		@media(max-width: 1024px) {
-			.container {
-				padding: 1em 6em 1em 6em;
-			}
-
-			body {
-				font-size: 1.1em;
-			}
-		}
-
-		@media(max-width: 430px) {
-			.container {
-				padding: 0.5em 2em;
-			}
-
-			#header {
-				display: block !important;
-			}
 		}
 
 		#header {
@@ -306,25 +278,23 @@
 		document.body.style.backgroundColor = colorsAndLums[0].color;
 		document.querySelector(':root').style.setProperty('--color', colorsAndLums[2].color);
 	</script>
-	<div class="content">
-		<div class="container" id="header">
-			<h1>Harrison Wilde</h1>
-		</div>
-		<div class="container" id="intro">
-			<p>
-				Hi! I am a PhD researcher, data scientist and statistician working on advancing the methods and theory around causal and Bayesian computation, learning and modelling. I love working on impactful problems, specifically in the areas of health, epidemiology, pharmaceuticals and society. In light of the problems that these areas pose, I am concerned with improving our understanding of learning from complex and synthetic data, as well as fairness and privacy across all of these contexts.
-			</p>
-			<p>
-				I mainly work with collaborators across the Universities of Warwick, Oxford and UCL, as a member of the <a href="https://warwick.ac.uk/fac/sci/statistics/staff/research_students/wilde" target="_blank">University of Warwick's Department of Statistics</a>, a visiting member of <a href="http://www.stats.ox.ac.uk">Chris Holmes' Lab at the University of Oxford</a> and an honourary RA at the UCL Institute for Health Informatics. I am a member of the COVID-IMPACT and CVD-COVID-UK Consortia organised by Health Data Research UK and the British Heart Foundation, the 2019 <a href="https://warwick.ac.uk/services/dc/schols_fund/scholarships_and_funding/feuer/" target="_blank">Feuer International Scholar in Artificial Intelligence</a>, a collaborator at <a href="https://www.turing.ac.uk/people/external-researchers/harrison-wilde" target="_blank">The Alan Turing Institute</a>, a team member and contributor to the <a href="https://github.com/TuringLang" target="_blank">Turing.jl (Probabilistic Programming Language)</a>, and a volunteer Data Scientist at <a href="https://www.datakind.org" target="_blank">DataKind</a>.
-			</p>
-			<p>
-				Previously, I was a Research Scientist at <a href="https://cortex.twitter.com" target="_blank">Twitter's Cortex Lab</a>, a Research Scientist at <a href="https://pumas.ai" target="_blank">Pumas-AI</a>, a Fellow of the <a href="http://www.dssgfellowship.org/people/2019-fellows-mentors-warwick/" target="_blank">Data Science for Social Good Foundation</a>, and a Visiting Researcher and Data Scientist at <a href="https://www.homeless.org.uk" target="_blank">Homeless Link</a>.
-			</p>
-		</div>
-		<div class="container" id="projects">
-			<h2>Things I'm working on</h2>
-			<p>This website!</p>
-		</div>
+	<div class="container" id="header">
+		<h1>Harrison Wilde</h1>
+	</div>
+	<div class="container" id="intro">
+		<p>
+			Hi! I am a PhD researcher, data scientist and statistician working on advancing the methods and theory around causal and Bayesian computation, learning and modelling. I love working on impactful problems, specifically in the areas of health, epidemiology, pharmaceuticals and society. In light of the problems that these areas pose, I am concerned with improving our understanding of learning from complex and synthetic data, as well as fairness and privacy across all of these contexts.
+		</p>
+		<p>
+			I mainly work with collaborators across the Universities of Warwick, Oxford and UCL, as a member of the <a href="https://warwick.ac.uk/fac/sci/statistics/staff/research_students/wilde" target="_blank">University of Warwick's Department of Statistics</a>, a visiting member of <a href="http://www.stats.ox.ac.uk">Chris Holmes' Lab at the University of Oxford</a> and an honourary RA at the UCL Institute for Health Informatics. I am a member of the COVID-IMPACT and CVD-COVID-UK Consortia organised by Health Data Research UK and the British Heart Foundation, the 2019 <a href="https://warwick.ac.uk/services/dc/schols_fund/scholarships_and_funding/feuer/" target="_blank">Feuer International Scholar in Artificial Intelligence</a>, a collaborator at <a href="https://www.turing.ac.uk/people/external-researchers/harrison-wilde" target="_blank">The Alan Turing Institute</a>, a team member and contributor to the <a href="https://github.com/TuringLang" target="_blank">Turing.jl (Probabilistic Programming Language)</a>, and a volunteer Data Scientist at <a href="https://www.datakind.org" target="_blank">DataKind</a>.
+		</p>
+		<p>
+			Previously, I was a Research Scientist at <a href="https://cortex.twitter.com" target="_blank">Twitter's Cortex Lab</a>, a Research Scientist at <a href="https://pumas.ai" target="_blank">Pumas-AI</a>, a Fellow of the <a href="http://www.dssgfellowship.org/people/2019-fellows-mentors-warwick/" target="_blank">Data Science for Social Good Foundation</a>, and a Visiting Researcher and Data Scientist at <a href="https://www.homeless.org.uk" target="_blank">Homeless Link</a>.
+		</p>
+	</div>
+	<div class="container" id="projects">
+		<h2>Things I'm working on</h2>
+		<p>This website!</p>
 	</div>
 	<footer class="footer">
 		<a href="https://github.com/HarrisonWilde" target="_blank">GitHub</a>
