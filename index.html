@@ -63,29 +63,29 @@
 			overflow-wrap: break-word;
 		}
 
-		.content {
+		#content {
 			margin-bottom: 2em;
 			min-height: 100%;
 			padding: 1.5em;
 			overflow: auto;
 		}
 
-		.container {
-			max-width: 42em;
-			/* padding: 0em 3em; */
-		}
-
-		footer {
+		#footer {
 			bottom: 0;
 			height: 2em;
 			left: 0;
 			position: relative;
-			width:100%;
+			width: 100%;
 			padding: 1.5em;
 		}
-		footer a {
-			display: inline-block;
+
+		.container {
+			max-width: 42em;
+			/* padding: 0em 3em; */
 		}
+		/* footer a {
+			display: inline-block;
+		} */
 
 		.collapsible {
 			font-size: 14px;
@@ -284,7 +284,7 @@
 		document.body.style.backgroundColor = colorsAndLums[0].color;
 		document.querySelector(':root').style.setProperty('--color', colorsAndLums[2].color);
 	</script>
-	<div class="content">
+	<div id="content">
 		<div class="container" id="header">
 			<h1>Harrison Wilde</h1>
 		</div>
@@ -304,14 +304,14 @@
 			<p>This website!</p>
 		</div>
 	</div>
-	<footer class="footer">
+	<div id="footer">
 		<a href="https://github.com/HarrisonWilde" target="_blank">GitHub</a>
 		<a href="https://scholar.google.com/citations?user=GKk_420AAAAJ&hl=en" target="_blank">Google Scholar</a>
 		<a href="https://orcid.org/0000-0002-4391-8204" target="_blank">Orcid</a>
 		<a href="https://twitter.com/HarrisonDWilde" target="_blank">Twitter</a>
 		<a href="https://linkedin.com/in/HarrisonWilde" target="_blank">LinkedIn</a>
 		<a href="mailto:h.wilde@warwick.ac.uk">h@rrisonwil.de</a></p>
-	</footer>
+	</div>
 	<script>
 		var colls = document.getElementsByClassName("collapsible");		
 		for(var i = 0; i < colls.length; i++) {
