@@ -1,11 +1,10 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <meta charset="utf-8">
 <title>Redirecting to https://warwick.ac.uk/fac/sci/statistics/staff/research_students/wilde/</title>
 <meta http-equiv="refresh" content="0; URL=https://warwick.ac.uk/fac/sci/statistics/staff/research_students/wilde/">
-<link rel="canonical" href="https://warwick.ac.uk/fac/sci/statistics/staff/research_students/wilde/">
+<link rel="canonical" href="https://warwick.ac.uk/fac/sci/statistics/staff/research_students/wilde/"> -->
 
-
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -32,57 +31,6 @@
 			text-decoration: underline;
 			color: var(--color);
 		}
-
-		.collapsible {
-			font-size: 14px;
-			color: var(--color);
-			background-color: rgba(228, 0, 0, 0);
-			font-family: Menlo, 'Inconsolata', monospace;
-			overflow-wrap: break-word;
-			padding-left: 2em;
-			cursor: pointer;
-			border: none;
-			outline: none;
-			margin-top: 0.3em;
-			line-height: 150%;
-			margin-bottom: 0.3em;
-			font-size: 1em;
-			text-align: left;
-		}
-
-		.active, .collapsible:hover {
-			/* color: rgb(155, 155, 255); */
-			text-decoration: underline;
-			cursor: pointer;
-		}
-
-		.collapsible:after {
-			content: '\002B';
-			font-weight: bold;
-			float: left;
-			margin-right: 1em;
-		}
-
-		.active:after {
-			content: "\2212";
-		}
-
-		.content {
-			padding-left: 2em;
-			max-height: 0;
-			overflow: hidden;
-			transition: max-height 0.2s ease-out;
-		}
-
-		.expander-content {
-			padding-top: 1em;
-			padding-bottom: 1em;
-		}
-
-		.thing {
-			margin-bottom: 1.5em;
-		}
-
 		a:hover {
 			text-decoration: none;
 			cursor: pointer;
@@ -115,6 +63,7 @@
 			overflow-wrap: break-word;
 			padding-bottom: 1.5em;
 			padding-top: 1.5em;
+			margin-bottom: 50px;
 		}
 
 		.container {
@@ -123,15 +72,63 @@
 		}
 
 		footer {
-			max-width: 42em;
-			/* padding: 0em 3em; */
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+		footer .footer {
+			display: block;
+		}
+		footer a {
+			display: inline-block;
+		}
+
+		.collapsible {
+			font-size: 14px;
+			color: var(--color);
+			background-color: rgba(228, 0, 0, 0);
+			font-family: Menlo, 'Inconsolata', monospace;
+			overflow-wrap: break-word;
+			padding-left: 2em;
+			cursor: pointer;
+			border: none;
+			outline: none;
+			margin-top: 0.3em;
+			line-height: 150%;
+			margin-bottom: 0.3em;
+			font-size: 1em;
+			text-align: left;
+		}
+		.active, .collapsible:hover {
+			/* color: rgb(155, 155, 255); */
+			text-decoration: underline;
+			cursor: pointer;
+		}
+		.collapsible:after {
+			content: '\002B';
+			font-weight: bold;
+			float: left;
+			margin-right: 1em;
+		}
+		.active:after {
+			content: "\2212";
 		}
 
 		.content {
-			min-height: calc(100vh - 50px);
+			padding-left: 2em;
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height 0.2s ease-out;
 		}
-		.footer {
-			height: 50px;
+
+		.expander-content {
+			padding-top: 1em;
+			padding-bottom: 1em;
+		}
+
+		.thing {
+			margin-bottom: 1.5em;
 		}
 
 		@media(max-width: 1024px) {
@@ -159,14 +156,6 @@
 			flex-direction: row;
 			justify-content: space-between;
 			align-items: baseline;
-		}
-
-		#links {
-			margin-bottom: 1em;
-		}
-
-		#links a {
-			margin-right: 1em;
 		}
 	</style>
 </head>
@@ -388,16 +377,6 @@
 			</div> -->
 		</div>
 	</div>
-	<footer class="footer">
-		<a href="https://github.com/HarrisonWilde" target="_blank">GitHub</a>
-		<a href="https://scholar.google.com/citations?user=GKk_420AAAAJ&hl=en" target="_blank">Google Scholar</a>
-		<a href="https://orcid.org/0000-0002-4391-8204" target="_blank">Orcid</a>
-		<a href="https://twitter.com/HarrisonDWilde" target="_blank">Twitter</a>
-		<a href="https://linkedin.com/in/HarrisonWilde" target="_blank">LinkedIn</a>
-	</footer>
-	<!-- <div class="footer" id="links">
-		
-	</div> -->
 	<script>
 		var colls = document.getElementsByClassName("collapsible");		
 		for(var i = 0; i < colls.length; i++) {
@@ -417,5 +396,16 @@
 		}
 	</script>
 </body>
+<footer class="footer">
+	<p class="footer float-left">
+		Links:
+		<a href="https://github.com/HarrisonWilde" target="_blank">GitHub</a>
+		<a href="https://scholar.google.com/citations?user=GKk_420AAAAJ&hl=en" target="_blank">Google Scholar</a>
+		<a href="https://orcid.org/0000-0002-4391-8204" target="_blank">Orcid</a>
+		<a href="https://twitter.com/HarrisonDWilde" target="_blank">Twitter</a>
+		<a href="https://linkedin.com/in/HarrisonWilde" target="_blank">LinkedIn</a>
+	</p>
+	<p class="footer float-right">Designed by Me!</p>
+</footer>
 
-</html> -->
+</html>
