@@ -61,9 +61,13 @@
 		body {
 			font-family: Menlo, 'Inconsolata', monospace;
 			overflow-wrap: break-word;
-			padding-bottom: 1.5em;
-			padding-top: 1.5em;
-			margin-bottom: 50px;
+			padding: 1.5em;
+		}
+
+		.content {
+			margin-bottom: 2em;
+			min-height: 100%;
+			overflow: auto;
 		}
 
 		.container {
@@ -72,10 +76,11 @@
 		}
 
 		footer {
-			position: absolute;
 			bottom: 0;
+			height: 2em;
 			left: 0;
-			right: 0;
+			position: relative;
+			width:100%;
 		}
 		footer a {
 			display: inline-block;
@@ -297,15 +302,15 @@
 			<h2>Things I'm working on</h2>
 			<p>This website!</p>
 		</div>
-		<footer class="footer">
-			<a href="https://github.com/HarrisonWilde" target="_blank">GitHub</a>
-			<a href="https://scholar.google.com/citations?user=GKk_420AAAAJ&hl=en" target="_blank">Google Scholar</a>
-			<a href="https://orcid.org/0000-0002-4391-8204" target="_blank">Orcid</a>
-			<a href="https://twitter.com/HarrisonDWilde" target="_blank">Twitter</a>
-			<a href="https://linkedin.com/in/HarrisonWilde" target="_blank">LinkedIn</a>
-			<a href="mailto:hi@hwil.de">h@rrisonwil.de</a></p>
-		</footer>
 	</div>
+	<footer class="footer">
+		<a href="https://github.com/HarrisonWilde" target="_blank">GitHub</a>
+		<a href="https://scholar.google.com/citations?user=GKk_420AAAAJ&hl=en" target="_blank">Google Scholar</a>
+		<a href="https://orcid.org/0000-0002-4391-8204" target="_blank">Orcid</a>
+		<a href="https://twitter.com/HarrisonDWilde" target="_blank">Twitter</a>
+		<a href="https://linkedin.com/in/HarrisonWilde" target="_blank">LinkedIn</a>
+		<a href="mailto:h.wilde@warwick.ac.uk">h@rrisonwil.de</a></p>
+	</footer>
 	<script>
 		var colls = document.getElementsByClassName("collapsible");		
 		for(var i = 0; i < colls.length; i++) {
