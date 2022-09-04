@@ -51,18 +51,23 @@
 			margin-top: -4em;
 			padding: 0em 15%;
 			height: 4em;
-			width: 42em;
+			max-width: 42em;
 			clear: both;
+		}
+
+		a, .fa-brands, .fa-solid, .fa-regular {
+			color: var(--color);
+		}
+		a:hover, .fa-brands:hover, .fa-solid:hover, .fa-regular:hover {
+			cursor: pointer;
+			color: var(--fg-color);
 		}
 
 		a {
 			text-decoration: underline;
-			color: var(--color);
 		}
 		a:hover {
 			text-decoration: none;
-			cursor: pointer;
-			color: var(--fg-color);
 		}
 
 		h1,
@@ -88,10 +93,7 @@
 		.container {
 			max-width: 42em;
 			padding-bottom: 1em;
-		}
-
-		.fa-brands:hover, .fa-solid:hover {
-			color: var(--fg-color) !important;
+			position: relative;
 		}
 
 		/* .collapsible {
@@ -145,152 +147,157 @@
 			return (L1 + 0.05) / (L2 + 0.05);
 		}
 
-		var colors = paletteGenerator.generate(
-			3, // Colors
-			function(color){ // This function filters valid colors
-				var hcl = color.hcl();
-				// return random_num > 300 ? (hcl[0]>=random_num || hcl[0]<=(random_num-300)) : hcl[0]>=random_num && hcl[0]<=(random_num+60)
-				return hcl[0]>=0 && hcl[0]<=360
-				&& hcl[1]>=40 && hcl[1]<=70
-				&& hcl[2]>=10 && hcl[2]<=90;
-			},
-			true, // Using Force Vector instead of k-Means
-			100, // Steps (quality)
-			false, // Ultra precision
-			'Compromise' // Color distance type (colorblindness)
-		);
-		var colorsAndLums = colors.map(function(c) {
-			return {color: c, luminance: c.luminance()}
-		})
+		function setup_colors(darkMode) {
+			var colors = paletteGenerator.generate(
+				3, // Colors
+				function(color){ // This function filters valid colors
+					var hcl = color.hcl();
+					// return random_num > 300 ? (hcl[0]>=random_num || hcl[0]<=(random_num-300)) : hcl[0]>=random_num && hcl[0]<=(random_num+60)
+					return hcl[0]>=0 && hcl[0]<=360
+					&& hcl[1]>=40 && hcl[1]<=70
+					&& hcl[2]>=10 && hcl[2]<=90;
+				},
+				true, // Using Force Vector instead of k-Means
+				100, // Steps (quality)
+				false, // Ultra precision
+				'Compromise' // Color distance type (colorblindness)
+			);
+			var colorsAndLums = colors.map(function(c) {
+				return {color: c, luminance: c.luminance()}
+			})
 
-		if(darkMode == true) {
+			if(darkMode == true) {
 
-			console.log("Dark Mode is ON");
+				console.log("Dark Mode is ON");
 
-			// Sort in order of luminance ascending, such that the luminance of colorsAndLums[0] is the lowest of the three
-			colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; });
+				// Sort in order of luminance ascending, such that the luminance of colorsAndLums[0] is the lowest of the three
+				colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; });
 
-			var maxBGLum = 0.15;
-			var minRelLum = 5;
+				var maxBGLum = 0.075;
+				var minRelLum = 5;
 
-			// For dark mode, we first ensure the background colour's luminance is < {maxBGLum}
-			console.log("Original BG luminance.");
-			console.log(colorsAndLums[0].luminance);
-			if (colorsAndLums[0].luminance >= maxBGLum) {
-				colorsAndLums[0].color = colorsAndLums[0].color.luminance(maxBGLum);
-				colorsAndLums[0].luminance = maxBGLum;
-			}
-			console.log("Adjusted BG luminance.");
-			console.log(colorsAndLums[0].luminance);
+				// For dark mode, we first ensure the background colour's luminance is < {maxBGLum}
+				console.log("Original BG luminance.");
+				console.log(colorsAndLums[0].luminance);
+				if (colorsAndLums[0].luminance >= maxBGLum) {
+					colorsAndLums[0].color = colorsAndLums[0].color.luminance(maxBGLum);
+					colorsAndLums[0].luminance = maxBGLum;
+				}
+				console.log("Adjusted BG luminance.");
+				console.log(colorsAndLums[0].luminance);
 
-			fg_rel_lum = calculate_relative_luminance(colorsAndLums[1].luminance, colorsAndLums[0].luminance);
-			link_rel_lum = calculate_relative_luminance(colorsAndLums[2].luminance, colorsAndLums[0].luminance);
-
-			console.log("Original FG luminance.");
-			console.log(colorsAndLums[1].luminance);
-			console.log("Original FG-BG rel luminance.");
-			console.log(fg_rel_lum);
-
-			// If the background-foreground relative luminance is too low, the colours will be hard to distinguish, in this case, set the luminance of the foreground such that the rel lum is at least {minRelLum}
-			if (fg_rel_lum < minRelLum) {
-				colorsAndLums[1].luminance = (minRelLum * (colorsAndLums[0].luminance + 0.05) - 0.05);
-				colorsAndLums[1].color = colorsAndLums[1].color.luminance(colorsAndLums[1].luminance);
 				fg_rel_lum = calculate_relative_luminance(colorsAndLums[1].luminance, colorsAndLums[0].luminance);
-				console.log("Adjusted FG luminance.");
-				console.log(colorsAndLums[1].luminance);
-				console.log("Adjusted FG-BG rel luminance.");
-				console.log(fg_rel_lum);
-			}
-
-			console.log("Original Link luminance.");
-			console.log(colorsAndLums[2].luminance);
-			console.log("Original Link-BG rel luminance.");
-			console.log(link_rel_lum);
-
-			if (link_rel_lum < minRelLum) {
-				colorsAndLums[2].luminance = (minRelLum * (colorsAndLums[0].luminance + 0.05) - 0.05);
-				colorsAndLums[2].color = colorsAndLums[2].color.luminance(colorsAndLums[2].luminance);
 				link_rel_lum = calculate_relative_luminance(colorsAndLums[2].luminance, colorsAndLums[0].luminance);
-				console.log("Adjusted Link luminance.");
-				console.log(colorsAndLums[2].luminance);
-				console.log("Adjusted Link-BG rel luminance.");
-				console.log(link_rel_lum);
-			}
-		} else {
 
-			console.log("Dark Mode is OFF");
-
-			// Sort in order of luminance descending, such that the luminance of colorsAndLums[0] is the highest of the three
-			colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; }).reverse();
-
-			var minBGLum = 0.57;
-			var minRelLum = 5.5;
-
-			// For light mode, we first ensure the background colour's luminance is >= {maxBGLum}
-			console.log("Original BG luminance.");
-			console.log(colorsAndLums[0].luminance);
-			if (colorsAndLums[0].luminance < minBGLum) {
-				colorsAndLums[0].color = colorsAndLums[0].color.luminance(minBGLum);
-				colorsAndLums[0].luminance = minBGLum;
-			}
-			console.log("Adjusted BG luminance.");
-			console.log(colorsAndLums[0].luminance);
-
-			fg_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[1].luminance);
-			link_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[2].luminance);
-
-			console.log("Original FG luminance.");
-			console.log(colorsAndLums[1].luminance);
-			console.log("Original FG-BG rel luminance.");
-			console.log(fg_rel_lum);
-
-			// If the foreground-background relative luminance is too low, the colours will be hard to distinguish, in this case, set the luminance of the foreground such that the rel lum is at least {minRelLum}
-			if (fg_rel_lum < minRelLum) {
-				colorsAndLums[1].luminance = ((colorsAndLums[0].luminance + 0.05) / minRelLum) - 0.05;
-				colorsAndLums[1].color = colorsAndLums[1].color.luminance(colorsAndLums[1].luminance);
-				fg_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[1].luminance);
-				console.log("Adjusted FG luminance.");
+				console.log("Original FG luminance.");
 				console.log(colorsAndLums[1].luminance);
-				console.log("Adjusted FG-BG rel luminance.");
+				console.log("Original FG-BG rel luminance.");
 				console.log(fg_rel_lum);
-			}
 
-			console.log("Original Link luminance.");
-			console.log(colorsAndLums[2].luminance);
-			console.log("Original Link-BG rel luminance.");
-			console.log(link_rel_lum);
+				// If the background-foreground relative luminance is too low, the colours will be hard to distinguish, in this case, set the luminance of the foreground such that the rel lum is at least {minRelLum}
+				if (fg_rel_lum < minRelLum) {
+					colorsAndLums[1].luminance = (minRelLum * (colorsAndLums[0].luminance + 0.05) - 0.05);
+					colorsAndLums[1].color = colorsAndLums[1].color.luminance(colorsAndLums[1].luminance);
+					fg_rel_lum = calculate_relative_luminance(colorsAndLums[1].luminance, colorsAndLums[0].luminance);
+					console.log("Adjusted FG luminance.");
+					console.log(colorsAndLums[1].luminance);
+					console.log("Adjusted FG-BG rel luminance.");
+					console.log(fg_rel_lum);
+				}
 
-			if (fg_rel_lum < minRelLum) {
-				colorsAndLums[2].luminance = ((colorsAndLums[0].luminance + 0.05) / minRelLum) - 0.05;
-				colorsAndLums[2].color = colorsAndLums[2].color.luminance(colorsAndLums[2].luminance);
-				link_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[2].luminance);
-				console.log("Adjusted Link luminance.");
+				console.log("Original Link luminance.");
 				console.log(colorsAndLums[2].luminance);
-				console.log("Adjusted Link-BG rel luminance.");
+				console.log("Original Link-BG rel luminance.");
 				console.log(link_rel_lum);
+
+				if (link_rel_lum < minRelLum) {
+					colorsAndLums[2].luminance = (minRelLum * (colorsAndLums[0].luminance + 0.05) - 0.05);
+					colorsAndLums[2].color = colorsAndLums[2].color.luminance(colorsAndLums[2].luminance);
+					link_rel_lum = calculate_relative_luminance(colorsAndLums[2].luminance, colorsAndLums[0].luminance);
+					console.log("Adjusted Link luminance.");
+					console.log(colorsAndLums[2].luminance);
+					console.log("Adjusted Link-BG rel luminance.");
+					console.log(link_rel_lum);
+				}
+			} else {
+
+				console.log("Dark Mode is OFF");
+
+				// Sort in order of luminance descending, such that the luminance of colorsAndLums[0] is the highest of the three
+				colorsAndLums.sort(function(a, b){ return a.luminance - b.luminance; }).reverse();
+
+				var minBGLum = 0.57;
+				var minRelLum = 5.5;
+
+				// For light mode, we first ensure the background colour's luminance is >= {maxBGLum}
+				console.log("Original BG luminance.");
+				console.log(colorsAndLums[0].luminance);
+				if (colorsAndLums[0].luminance < minBGLum) {
+					colorsAndLums[0].color = colorsAndLums[0].color.luminance(minBGLum);
+					colorsAndLums[0].luminance = minBGLum;
+				}
+				console.log("Adjusted BG luminance.");
+				console.log(colorsAndLums[0].luminance);
+
+				fg_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[1].luminance);
+				link_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[2].luminance);
+
+				console.log("Original FG luminance.");
+				console.log(colorsAndLums[1].luminance);
+				console.log("Original FG-BG rel luminance.");
+				console.log(fg_rel_lum);
+
+				// If the foreground-background relative luminance is too low, the colours will be hard to distinguish, in this case, set the luminance of the foreground such that the rel lum is at least {minRelLum}
+				if (fg_rel_lum < minRelLum) {
+					colorsAndLums[1].luminance = ((colorsAndLums[0].luminance + 0.05) / minRelLum) - 0.05;
+					colorsAndLums[1].color = colorsAndLums[1].color.luminance(colorsAndLums[1].luminance);
+					fg_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[1].luminance);
+					console.log("Adjusted FG luminance.");
+					console.log(colorsAndLums[1].luminance);
+					console.log("Adjusted FG-BG rel luminance.");
+					console.log(fg_rel_lum);
+				}
+
+				console.log("Original Link luminance.");
+				console.log(colorsAndLums[2].luminance);
+				console.log("Original Link-BG rel luminance.");
+				console.log(link_rel_lum);
+
+				if (fg_rel_lum < minRelLum) {
+					colorsAndLums[2].luminance = ((colorsAndLums[0].luminance + 0.05) / minRelLum) - 0.05;
+					colorsAndLums[2].color = colorsAndLums[2].color.luminance(colorsAndLums[2].luminance);
+					link_rel_lum = calculate_relative_luminance(colorsAndLums[0].luminance, colorsAndLums[2].luminance);
+					console.log("Adjusted Link luminance.");
+					console.log(colorsAndLums[2].luminance);
+					console.log("Adjusted Link-BG rel luminance.");
+					console.log(link_rel_lum);
+				}
+
 			}
 
+			console.log(colorsAndLums);
+			document.body.style.color = colorsAndLums[1].color;
+			document.querySelector(':root').style.setProperty('--fg-color', colorsAndLums[1].color);
+
+			document.querySelector("meta[name='theme-color']").content = colorsAndLums[0].color;
+			document.body.style.backgroundColor = colorsAndLums[0].color;
+			document.querySelector(':root').style.setProperty('--color', colorsAndLums[2].color);
 		}
-
-		console.log(colorsAndLums);
-		document.body.style.color = colorsAndLums[1].color;
-		document.querySelector(':root').style.setProperty('--fg-color', colorsAndLums[1].color);
-
-		document.querySelector("meta[name='theme-color']").content = colorsAndLums[0].color;
-		document.body.style.backgroundColor = colorsAndLums[0].color;
-		document.querySelector(':root').style.setProperty('--color', colorsAndLums[2].color);
+		setup_colors(darkMode);
 	</script>
 	<div id="wrap">
 		<div id="main">
 			<div class="container" id="header">
 				<h1>Harrison Wilde</h1>
+				<i id="mode-button" class="fa-solid fa-sun fa-2x" style="position: absolute; top: calc(11px - 0.25em); right: 0"></i>
+				
 			</div>
 			<div class="container" id="intro">
 				<p>
-					Hi! I am a PhD researcher, data scientist and statistician working on advancing the methods and theory around causal and Bayesian computation, learning and modelling. I love working on impactful problems, specifically in the areas of health, epidemiology, pharmaceuticals and society. In light of the problems that these areas pose, I am concerned with improving our understanding of learning from complex and synthetic data, as well as fairness and privacy across all of these contexts.
+					Hi! I am a PhD researcher, data scientist and statistician working on advancing the methods and theory surrounding causal and Bayesian computation, learning and modelling. I love working on impactful problems, specifically in the areas of health, epidemiology, pharmaceuticals and society. In light of the problems that these areas pose, I am concerned with improving our understanding and machinery for learning from complex and synthetic data, as well as fairness and privacy across all of these contexts.
 				</p>
 				<p>
-					I mainly work with collaborators across the Universities of Warwick, Oxford and UCL, as a member of the <a href="https://warwick.ac.uk/fac/sci/statistics/staff/research_students/wilde" target="_blank">University of Warwick's Department of Statistics</a>, a visiting member of <a href="http://www.stats.ox.ac.uk">Chris Holmes' Lab at the University of Oxford</a> and an honourary RA at the UCL Institute for Health Informatics. I am a member of the COVID-IMPACT and CVD-COVID-UK Consortia organised by Health Data Research UK and the British Heart Foundation, the 2019 <a href="https://warwick.ac.uk/services/dc/schols_fund/scholarships_and_funding/feuer/" target="_blank">Feuer International Scholar in Artificial Intelligence</a>, a collaborator at <a href="https://www.turing.ac.uk/people/external-researchers/harrison-wilde" target="_blank">The Alan Turing Institute</a>, a team member and contributor to the <a href="https://github.com/TuringLang" target="_blank">Turing.jl (Probabilistic Programming Language)</a>, and a volunteer Data Scientist at <a href="https://www.datakind.org" target="_blank">DataKind</a>.
+					I mainly work with collaborators across the Universities of Warwick, Oxford and UCL, as a member of the <a href="https://warwick.ac.uk/fac/sci/statistics/staff/research_students/wilde" target="_blank">University of Warwick's Department of Statistics</a>, a visiting member of <a href="http://www.stats.ox.ac.uk">Chris Holmes' Lab at the University of Oxford</a> and an honourary RA at the <a href="https://www.ucl.ac.uk/health-informatics/">UCL Institute for Health Informatics</a>. I am a member of the <a href="https://www.hdruk.ac.uk/projects/cvd-covid-uk-project/">COVID-IMPACT and CVD-COVID-UK Consortia</a> organised by <a href="https://www.hdruk.ac.uk/help-with-your-data/bhf-data-science-centre/">Health Data Research UK and the British Heart Foundation's DSC</a>, the 2019 <a href="https://warwick.ac.uk/services/dc/schols_fund/scholarships_and_funding/feuer/" target="_blank">Feuer International Scholar in Artificial Intelligence</a>, a collaborator at <a href="https://www.turing.ac.uk/people/external-researchers/harrison-wilde" target="_blank">The Alan Turing Institute</a>, a team member and contributor to the <a href="https://github.com/TuringLang" target="_blank">Turing.jl (Probabilistic Programming Language)</a>, as well as an organiser and volunteer with organisations such as <a href="https://www.datakind.org">DataKind</a> and the <a href="https://www.dssgfellowship.org">Data Science for Social Good Foundation</a>.
 				</p>
 				<p>
 					Previously, I was a Research Scientist at <a href="https://cortex.twitter.com" target="_blank">Twitter's Cortex Lab</a>, a Research Scientist at <a href="https://pumas.ai" target="_blank">Pumas-AI</a>, a Fellow of the <a href="http://www.dssgfellowship.org/people/2019-fellows-mentors-warwick/" target="_blank">Data Science for Social Good Foundation</a>, and a Visiting Researcher and Data Scientist at <a href="https://www.homeless.org.uk" target="_blank">Homeless Link</a>.
@@ -314,6 +321,29 @@
 			<a href="mailto:h@rrisonwil.de">h@rrisonwil.de</a>
 		</span>
 	</div>
+	<script>
+		function enableLightMode() {
+			document.getElementsByClassName("fa-solid fa-sun fa-2x")[0].removeEventListener("click", enableLightMode);
+			document.getElementById("mode-button").className = "fa-regular fa-sun fa-2x";
+			document.getElementsByClassName("fa-regular fa-sun fa-2x")[0].addEventListener("click", enableDarkMode);
+
+			setup_colors(false);
+		}
+		function enableDarkMode() {
+			document.getElementsByClassName("fa-regular fa-sun fa-2x")[0].removeEventListener("click", enableDarkMode);
+			document.getElementById("mode-button").className = "fa-solid fa-sun fa-2x";
+			document.getElementsByClassName("fa-solid fa-sun fa-2x")[0].addEventListener("click", enableLightMode);
+
+			setup_colors(true);
+		}
+		if (darkMode) {
+			document.getElementById("mode-button").className = "fa-solid fa-sun fa-2x";
+			document.getElementsByClassName("fa-solid fa-sun fa-2x")[0].addEventListener("click", enableLightMode);
+		} else {
+			document.getElementById("mode-button").className = "fa-regular fa-sun fa-2x";
+			document.getElementsByClassName("fa-regular fa-sun fa-2x")[0].addEventListener("click", enableDarkMode);
+		}
+	</script>
 	<script>
 		var colls = document.getElementsByClassName("collapsible");		
 		for(var i = 0; i < colls.length; i++) {
