@@ -55,6 +55,20 @@
 			clear: both;
 		}
 
+		#links {
+			float: left;
+		}
+
+		#email {
+			float: right;
+		}
+
+		#mode-button {
+			position: absolute;
+			top: calc(11px - 0.25em);
+			right: 0
+		}
+
 		a, .fa-brands, .fa-solid, .fa-regular {
 			color: var(--color);
 		}
@@ -94,6 +108,39 @@
 			max-width: 42em;
 			padding-bottom: 1em;
 			position: relative;
+		}
+
+		@media (max-width: 42em), (pointer:none), (pointer:coarse) {
+			#main {
+				padding: 3em 3em;
+				overflow: auto;
+			}
+
+			#footer {
+				position: relative;
+				margin-top: -7em;
+				padding: 0em;
+				height: 7em;
+				clear: both;
+			}
+
+			#links {
+				padding-top: 1em;
+				display: table;
+				margin: 0 auto;
+				float: none;
+			}
+
+			#email {
+				padding-top: 1em;
+				display: table;
+				margin: 0 auto;
+				float: none;
+			}
+
+			#header {
+				padding-top: calc(52px + 1em);
+			}
 		}
 
 		/* .collapsible {
@@ -289,8 +336,7 @@
 		<div id="main">
 			<div class="container" id="header">
 				<h1>Harrison Wilde</h1>
-				<i id="mode-button" class="fa-solid fa-sun fa-2x" style="position: absolute; top: calc(11px - 0.25em); right: 0"></i>
-				
+				<i id="mode-button" class="fa-solid fa-sun fa-2x"></i>
 			</div>
 			<div class="container" id="intro">
 				<p>
@@ -310,14 +356,14 @@
 		</div>
 	</div>
 	<div id="footer">
-		<span style="float: left;">
+		<span id="links">
 			<a href="https://github.com/HarrisonWilde" target="_blank"><i class="fa-brands fa-github fa-lg"></i></a>&nbsp;
 			<a href="https://scholar.google.com/citations?user=GKk_420AAAAJ&hl=en" target="_blank"><i class="fa-solid fa-graduation-cap fa-lg"></i></a>&nbsp;
 			<a href="https://orcid.org/0000-0002-4391-8204" target="_blank"><i class="fa-brands fa-orcid fa-lg"></i></a>&nbsp;
 			<a href="https://twitter.com/HarrisonDWilde" target="_blank"><i class="fa-brands fa-twitter fa-lg"></i></a>&nbsp;
 			<a href="https://linkedin.com/in/HarrisonWilde" target="_blank"><i class="fa-brands fa-linkedin-in fa-lg"></i></a>
 		</span>
-		<span style="float: right;">
+		<span id="email">
 			<a href="mailto:h@rrisonwil.de">h@rrisonwil.de</a>
 		</span>
 	</div>
