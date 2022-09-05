@@ -84,10 +84,7 @@
 			text-decoration: none;
 		}
 
-		h1,
-		h2,
-		h3,
-		h4 {
+		h1, h2, h3, h4 {
 			font-weight: normal;
 			padding-bottom: 0.5em;
 		}
@@ -368,13 +365,13 @@
 	<script>
 		function enableLightMode() {
 			document.getElementsByClassName("fa-solid fa-sun fa-2x")[0].removeEventListener("click", enableLightMode);
-			document.getElementById("mode-button").className = "fa-regular fa-sun fa-2x";
-			document.getElementsByClassName("fa-regular fa-sun fa-2x")[0].addEventListener("click", enableDarkMode);
+			document.getElementById("mode-button").className = "fa-solid fa-moon fa-2x";
+			document.getElementsByClassName("fa-solid fa-moon fa-2x")[0].addEventListener("click", enableDarkMode);
 
 			setup_colors(false);
 		}
 		function enableDarkMode() {
-			document.getElementsByClassName("fa-regular fa-sun fa-2x")[0].removeEventListener("click", enableDarkMode);
+			document.getElementsByClassName("fa-solid fa-moon fa-2x")[0].removeEventListener("click", enableDarkMode);
 			document.getElementById("mode-button").className = "fa-solid fa-sun fa-2x";
 			document.getElementsByClassName("fa-solid fa-sun fa-2x")[0].addEventListener("click", enableLightMode);
 
@@ -384,8 +381,8 @@
 			document.getElementById("mode-button").className = "fa-solid fa-sun fa-2x";
 			document.getElementsByClassName("fa-solid fa-sun fa-2x")[0].addEventListener("click", enableLightMode);
 		} else {
-			document.getElementById("mode-button").className = "fa-regular fa-sun fa-2x";
-			document.getElementsByClassName("fa-regular fa-sun fa-2x")[0].addEventListener("click", enableDarkMode);
+			document.getElementById("mode-button").className = "fa-solid fa-moon fa-2x";
+			document.getElementsByClassName("fa-solid fa-moon fa-2x")[0].addEventListener("click", enableDarkMode);
 		}
 	</script>
 	<script>
