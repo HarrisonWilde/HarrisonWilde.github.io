@@ -112,7 +112,7 @@
 
 		@media (max-width: 42em), (pointer:none), (pointer:coarse) {
 			#main {
-				padding: 2em 3em 7em 3em;
+				padding: 2em 2em 7em 2em;
 				overflow: auto;
 			}
 
@@ -132,7 +132,12 @@
 			}
 
 			#header {
-				padding-top: 52px;
+				padding-top: calc(1em + 52px);
+			}
+
+			p {
+				font-size: 13px;
+				text-align: justify;
 			}
 		}
 
