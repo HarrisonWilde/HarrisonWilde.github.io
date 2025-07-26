@@ -147,7 +147,11 @@
 			padding-bottom: 2em;
 		}
 
-		#mode-button {
+		#mode-button, #shuffle-button {
+			padding-bottom: 0.5em;
+		}
+
+		#mode-button-container {
 			padding-bottom: 0.5em;
 		}
 
@@ -228,7 +232,10 @@
 					<div style="flex-grow: 1;">
 						<h1>Publications</h1>
 					</div>
-					<i id="mode-button" class="fa-solid fa-sun fa-2x"></i>
+					<i id="shuffle-button" class="fa-solid fa-shuffle fa-2x" style="margin-right: 20px;"></i>
+					<div id="mode-button-container" style="width: 30px; display: inline-block; text-align: center;">
+						<i id="mode-button" class="fa-solid fa-sun fa-2x"></i>
+					</div>
 				</div>
 				<div id="publications">
 					<!-- Publications will be loaded dynamically -->
@@ -243,12 +250,16 @@
 			</div>
 		</div>
 	<script>
-		const d = new Date();
-		let hour = d.getHours();
-		var darkMode = false;
-		if(hour > 19 || hour < 7) {
-			darkMode = true;
-		}
+	const d = new Date();
+	let hour = d.getHours();
+	var darkMode = false;
+	if(hour > 19 || hour < 7) {
+		darkMode = true;
+	}
+
+	// Initialize theme variables
+	var currentMode = 'auto'; // 'light', 'dark', or 'auto'
+	var useRandomColors = false;
 
 		function calculate_relative_luminance(L1, L2) {
 			return (L1 + 0.05) / (L2 + 0.05);
@@ -258,8 +269,10 @@
 			this.splice(to, 0, this.splice(from, 1)[0]);
 		};
 
-		function setup_colors(darkMode) {
-			var colors = paletteGenerator.generate(
+	function setup_colors(darkMode, useRandomColors = false) {
+		var colors;
+		if (useRandomColors) {
+			colors = paletteGenerator.generate(
 				3, // Colors
 				function(color){ // This function filters valid colors
 					var hcl = color.hcl();
@@ -273,6 +286,24 @@
 				false, // Ultra precision
 				'Compromise' // Color distance type (colorblindness)
 			);
+		} else {
+			// Use preset colors for light/dark mode
+			if (darkMode) {
+				// Dark mode preset colors
+				colors = [
+					chroma('#1a1a1a'), // Dark background
+					chroma('#2d2d2d'), // Dark secondary background
+					chroma('#0000FF')  // Light text
+				];
+			} else {
+				// Light mode preset colors
+				colors = [
+					chroma('#f8f8f8'), // Light background
+					chroma('#ffffff'), // White secondary background
+					chroma('#0000FF')  // Dark text
+				];
+			}
+		}
 			var colorsAndLums = colors.map(function(c) {
 				return {color: c, luminance: c.luminance(), ogcolor: c, ogluminance: c.luminance()}
 			})
@@ -477,34 +508,47 @@
 			document.querySelector(':root').style.setProperty('--link-l-color', extendedColorsAndLums[4].color);
 			document.querySelector(':root').style.setProperty('--link-r-color', extendedColorsAndLums[5].color);
 		}
-		setup_colors(darkMode);
+	setup_colors(darkMode, useRandomColors);
 	</script>
 	<script>
-		function enableLightMode() {
-			document.getElementsByClassName("fa-solid fa-sun fa-2x")[0].removeEventListener("click", enableLightMode);
-			document.getElementById("mode-button").className = "fa-solid fa-moon fa-2x";
-			document.getElementById("mode-button").style.right = "4px";
-			document.getElementsByClassName("fa-solid fa-moon fa-2x")[0].addEventListener("click", enableDarkMode);
+	function enableLightMode() {
+		currentMode = 'light';
+		document.getElementById("mode-button").className = "fa-solid fa-moon fa-2x";
+		setup_colors(false, useRandomColors);
+	}
+	function enableDarkMode() {
+		currentMode = 'dark';
+		document.getElementById("mode-button").className = "fa-solid fa-sun fa-2x";
+		setup_colors(true, useRandomColors);
+	}
+	function activateShuffle() {
+		// Once shuffle is activated, it stays on and generates new colors
+		useRandomColors = true;
+		document.getElementById("shuffle-button").style.color = "var(--link-r-color)";
 
-			setup_colors(false);
-		}
-		function enableDarkMode() {
-			document.getElementsByClassName("fa-solid fa-moon fa-2x")[0].removeEventListener("click", enableDarkMode);
-			document.getElementById("mode-button").className = "fa-solid fa-sun fa-2x";
-			document.getElementById("mode-button").style.right = "0px";
-			document.getElementsByClassName("fa-solid fa-sun fa-2x")[0].addEventListener("click", enableLightMode);
+		// Generate new random colors
+		var isDark = currentMode === 'dark' || (currentMode === 'auto' && darkMode);
+		setup_colors(isDark, useRandomColors);
+	}
+	// Set up mode toggle button
+	if (darkMode) {
+		document.getElementById("mode-button").className = "fa-solid fa-sun fa-2x";
+		currentMode = 'dark';
+	} else {
+		document.getElementById("mode-button").className = "fa-solid fa-moon fa-2x";
+		currentMode = 'light';
+	}
 
-			setup_colors(true);
-		}
-		if (darkMode) {
-			document.getElementById("mode-button").className = "fa-solid fa-sun fa-2x";
-			document.getElementById("mode-button").style.right = "0px";
-			document.getElementsByClassName("fa-solid fa-sun fa-2x")[0].addEventListener("click", enableLightMode);
+	// Add event listeners
+	document.getElementById("mode-button").addEventListener("click", function() {
+		if (currentMode === 'light' || (currentMode === 'auto' && !darkMode)) {
+			enableDarkMode();
 		} else {
-			document.getElementById("mode-button").className = "fa-solid fa-moon fa-2x";
-			document.getElementById("mode-button").style.right = "4px";
-			document.getElementsByClassName("fa-solid fa-moon fa-2x")[0].addEventListener("click", enableDarkMode);
+			enableLightMode();
 		}
+	});
+
+	document.getElementById("shuffle-button").addEventListener("click", activateShuffle);
 	</script>
 	<script>
 		var colls = document.getElementsByClassName("collapsible");
