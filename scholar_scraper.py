@@ -15,16 +15,9 @@ python scholar_scraper.py
 
 import json
 from datetime import datetime
-import time
 
 import requests
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 # Configuration
 SCHOLAR_URL = "https://scholar.google.com/citations?hl=en&authuser=1&user=nkElOLUAAAAJ"
@@ -89,11 +82,12 @@ def extract_stats_simple():
     return None
 
 
-def get_full_authors(pub_url, headers):
+def get_page_details(pub_url, headers):
     """Fetch the complete author list from a publication's detail page."""
     try:
         response = requests.get(pub_url, headers=headers, timeout=10)
         if response.status_code != 200:
+            print(f"  Warning: Failed to fetch publication detail page {pub_url}: {response.status_code}")
             return None
 
         soup = BeautifulSoup(response.text, "html.parser")
@@ -101,27 +95,19 @@ def get_full_authors(pub_url, headers):
         # Look for the authors in the detail page - they're usually in a div with class="gs_scl"
         author_divs = soup.find_all("div", class_="gs_scl")
         for div in author_divs:
-            label = div.find("div", class_="gs_sclh")
+            label = div.find("div", class_="gsc_oci_field")
             if label and "Authors" in label.text:
-                authors_div = div.find("div", class_="gs_sclv")
+                authors_div = div.find("div", class_="gsc_oci_value")
                 if authors_div:
                     # Extract authors and clean up
                     authors_text = authors_div.text.strip()
                     authors = [author.strip() for author in authors_text.split(",")]
-                    return authors
 
-        # Fallback: look for authors in different possible locations
-        authors_elem = soup.find("div", class_="gs_a")
-        if authors_elem:
-            authors_text = authors_elem.text.strip()
-            # Remove year and venue info that might be included
-            if " - " in authors_text:
-                authors_text = authors_text.split(" - ")[0]
-            authors = [author.strip() for author in authors_text.split(",")]
-            return authors
+        link = soup.find("a", class_="gsc_oci_title_link").get("href", "")
+        return authors, link
 
     except Exception as e:
-        print(f"  Warning: Could not fetch full authors from {pub_url}: {e}")
+        print(f"  Warning: Could not fetch page details from {pub_url}: {e}")
 
     return None
 
@@ -157,24 +143,20 @@ def scrape_publications():
 
                 # Extract the Google Scholar link and make it absolute
                 scholar_href = title_elem["href"]
-                link = f"https://scholar.google.com{scholar_href}" if scholar_href.startswith("/") else scholar_href
+                scholar_link = (
+                    f"https://scholar.google.com{scholar_href}" if scholar_href.startswith("/") else scholar_href
+                )
 
                 print(f"  [{i}/{len(pub_elements)}] Processing: {title[:60]}...")
 
-                # Check if authors list is truncated (ends with "...")
-                if initial_authors and initial_authors[-1].strip() == "...":
-                    print("    Detected truncated authors, fetching full list...")
-                    full_authors = get_full_authors(link, headers)
-                    if full_authors:
-                        authors = full_authors
-                        print(f"    ✅ Got {len(authors)} complete authors")
-                    else:
-                        # Remove the "..." but keep the partial list
-                        authors = initial_authors[:-1]
-                        print(f"    ⚠️  Could not fetch full authors, using partial list ({len(authors)} authors)")
+                full_authors, link = get_page_details(scholar_link, headers)
+                if full_authors:
+                    authors = full_authors
+                    print(f"    ✅ Got {len(authors)} complete authors")
                 else:
+                    # Remove the "..." but keep the partial list
                     authors = initial_authors
-                    print(f"    ✅ Complete author list ({len(authors)} authors)")
+                    print("    ⚠️  Could not fetch full authors, using partial list")
 
                 publications.append(
                     {
@@ -263,7 +245,6 @@ def main():
 
     except Exception as e:
         print(f"❌ Error: {e}")
-        print("Using fallback data...")
 
 
 if __name__ == "__main__":
