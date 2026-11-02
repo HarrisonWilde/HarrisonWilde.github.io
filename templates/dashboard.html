@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% block title %}Library · {{ site.title }}{% endblock %}
+{% block main %}
+<h1 class="page-title">Library</h1>
+<p class="lede">Everything in the archive: {{ total_count }} {{ "entry" if total_count == 1 else "entries" }}, {{ total_count - private_count }} public.</p>
+
+<table class="counts">
+{% for c, n, public in counts %}
+  <tr>
+    <td>{% if n %}<a href="/{{ c.key }}/">{{ c.label }}</a>{% else %}{{ c.label }}{% endif %}</td>
+    <td>{{ n }}</td>
+    <td>{{ public }} public</td>
+  </tr>
+{% endfor %}
+</table>
+{% if statuses or undated %}
+<p class="note">
+  {% for status, n in statuses %}{{ n }} {{ status }}{% if not loop.last %} · {% endif %}{% endfor %}
+  {%- if statuses and undated %} · {% endif %}{% if undated %}{{ undated }} undated{% endif %}
+</p>
+{% endif %}
+
+{% if on_this_day %}
+<h2>On this day</h2>
+<ul class="feed">
+{% for e in on_this_day %}
+  <li>
+    <time datetime="{{ e.when.iso }}">{{ e.when.day.year }}</time>
+    <span><span class="kind">{{ e.collection.kind }}</span> <a href="{{ e.url }}">{{ m.title(e) }}</a>{% if e.meta_line %} <span class="meta">{{ e.meta_line }}</span>{% endif %}</span>
+  </li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if latest %}
+<h2>Latest</h2>
+{{ m.feed_groups(latest) }}
+{% endif %}
+
+{% if warnings %}
+<h2>Build warnings</h2>
+<ul class="plain warnings">
+{% for w in warnings %}<li>{{ w }}</li>{% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

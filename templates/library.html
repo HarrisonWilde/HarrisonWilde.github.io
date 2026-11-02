@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ c.label }} · library{% endblock %}
+{% block main %}
+<p class="kicker"><a href="/library/">library</a></p>
+<h1 class="page-title">{{ c.label }}</h1>
+<p class="lede">{{ entries|length }} {{ "entry" if entries|length == 1 else "entries" }} · {{ public_count }} public</p>
+<input class="filter" type="search" placeholder="filter" aria-label="Filter {{ c.label }}" data-table="library">
+<div class="table-wrap">
+<table class="library" id="library">
+  <thead>
+    <tr>
+      <th data-sort="text" aria-sort="descending">date</th>
+      <th data-sort="text">title</th>
+      {% for col in c.columns %}<th data-sort="{{ 'num' if col in ('year', 'rating') else 'text' }}">{{ col|label }}</th>{% endfor %}
+      <th data-sort="text"></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for e in entries %}
+    <tr>
+      <td data-v="{{ e.when.iso if e.when else '' }}">{{ e.when.compact if e.when else "" }}</td>
+      <td data-v="{{ e.title|lower }}">
+        <a href="{{ e.url }}">{% if c.italic %}<i>{{ e.title }}</i>{% else %}{{ e.title }}{% endif %}</a>
+        {%- if e.favourite %} <span class="fav" title="Favourite">♥</span>{% endif %}
+      </td>
+      {% for col in c.columns %}
+      <td{% if col == "rating" %} data-v="{{ e.rating or 0 }}" class="stars"{% endif %}>{{ e.value(col) }}</td>
+      {% endfor %}
+      <td data-v="{{ 'a' if e.public else 'b' }}">{% if e.public %}<span class="badge is-public">public</span>{% endif %}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  var table = document.getElementById("library"), body = table.tBodies[0];
+  var input = document.querySelector('[data-table="library"]');
+  input.addEventListener("input", function () {
+    var q = input.value.trim().toLowerCase();
+    [].forEach.call(body.rows, function (r) { r.hidden = q && r.textContent.toLowerCase().indexOf(q) < 0; });
+  });
+  [].forEach.call(table.tHead.rows[0].cells, function (th, i) {
+    th.addEventListener("click", function () {
+      var desc = th.getAttribute("aria-sort") !== "descending", num = th.dataset.sort === "num";
+      [].forEach.call(th.parentNode.cells, function (x) { x.removeAttribute("aria-sort"); });
+      th.setAttribute("aria-sort", desc ? "descending" : "ascending");
+      var key = function (r) { var c = r.cells[i], v = c.dataset.v != null ? c.dataset.v : c.textContent.trim().toLowerCase(); return num ? parseFloat(v) || 0 : v; };
+      [].slice.call(body.rows).sort(function (a, b) { var x = key(a), y = key(b); return (x < y ? -1 : x > y ? 1 : 0) * (desc ? -1 : 1); })
+        .forEach(function (r) { body.appendChild(r); });
+    });
+  });
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ c.label }} · {{ site.title }}{% endblock %}
+{% block main %}
+<h1 class="page-title">{{ c.label }}</h1>
+<ul class="posts">
+{% for e in entries %}
+  <li>
+    <a href="{{ e.url }}">{{ e.title }}</a>{% if private and not e.public %} <span class="badge">draft</span>{% endif %}
+    {% if e.when %}<time datetime="{{ e.when.iso }}">{{ e.when.long }}</time>{% endif %}
+    {% if e.summary %}<p>{{ e.summary }}</p>{% endif %}
+  </li>
+{% endfor %}
+</ul>
+{% endblock %}

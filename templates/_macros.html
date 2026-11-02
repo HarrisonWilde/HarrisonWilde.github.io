@@ -1,0 +1,25 @@
+{% macro title(e) -%}
+{% if e.collection.italic %}<i>{{ e.title }}</i>{% else %}{{ e.title }}{% endif %}
+{%- endmacro %}
+
+{% macro feed_item(e, kind=true) -%}
+<li>
+  <time{% if e.when %} datetime="{{ e.when.iso }}"{% endif %}>{{ e.when.short if e.when else "" }}</time>
+  <span>
+    {%- if kind %}<span class="kind">{{ e.collection.kind }}</span> {% endif -%}
+    <a href="{{ e.url }}">{{ title(e) }}</a>
+    {%- if e.meta_line %} <span class="meta">{{ e.meta_line }}</span>{% endif %}
+    {%- if e.favourite %} <span class="fav" title="Favourite">♥</span>{% endif %}
+    {%- if private and not e.public %} <span class="badge">private</span>{% endif -%}
+  </span>
+</li>
+{%- endmacro %}
+
+{% macro feed_groups(groups, kind=true, mark_current_year=false) -%}
+<ul class="feed">
+{% for year, items in groups %}
+  {% if mark_current_year or year != today.year %}<li class="year-mark">{{ year }}</li>{% endif %}
+  {% for e in items %}{{ feed_item(e, kind) }}{% endfor %}
+{% endfor %}
+</ul>
+{%- endmacro %}

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ site.title }}{% endblock %}</title>
+<meta name="description" content="{% block description %}{{ site.description }}{% endblock %}">
+{% if private %}
+<meta name="robots" content="noindex, nofollow">
+{% endif %}
+<link rel="stylesheet" href="/style.css?v={{ css_version }}">
+{% if has_feed and not private %}
+<link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="/feed.xml">
+{% endif %}
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body{% if body_class or private %} class="{{ body_class }}{% if private %} has-private-bar{% endif %}"{% endif %}>
+{% if private %}
+<p class="private-bar">private build · {{ private_count }} of {{ total_count }} entries aren’t public · never upload this folder</p>
+{% endif %}
+<header class="masthead">
+{% block masthead %}
+  <p class="name"><a href="/">{{ site.title }}</a></p>
+{% endblock %}
+  <nav>
+  {% for label, href in nav %}
+    <a href="{{ href }}"{% if href == current %} aria-current="page"{% endif %}>{{ label }}</a>
+  {% endfor %}
+    <button type="button" class="theme" id="theme" data-mode="auto" title="Theme: auto" aria-label="Colour theme: auto">
+      <svg class="auto" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.5"/><path d="M8 2.5a5.5 5.5 0 0 0 0 11z" fill="currentColor"/></svg>
+      <svg class="light" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="2.8"/><path d="M8 1.5v1.6m0 9.8v1.6M1.5 8h1.6m9.8 0h1.6M3.4 3.4l1.1 1.1m7 7 1.1 1.1M3.4 12.6l1.1-1.1m7-7 1.1-1.1"/></svg>
+      <svg class="dark" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.43 8.85A5.5 5.5 0 1 1 7.15 2.57a4.5 4.5 0 0 0 6.28 6.28z"/></svg>
+    </button>
+  </nav>
+</header>
+<main>
+{% block main %}{% endblock %}
+</main>
+<script>
+(function () {
+  var b = document.getElementById("theme"), r = document.documentElement;
+  var modes = ["auto", "light", "dark"];
+  function show(mode) {
+    b.dataset.mode = mode; // the CSS shows the matching icon
+    b.title = "Theme: " + mode;
+    b.setAttribute("aria-label", "Colour theme: " + mode);
+  }
+  show(r.dataset.theme || "auto");
+  b.addEventListener("click", function () {
+    var next = modes[(modes.indexOf(b.dataset.mode) + 1) % modes.length];
+    if (next === "auto") delete r.dataset.theme; else r.dataset.theme = next;
+    show(next);
+    try { next === "auto" ? localStorage.removeItem("theme") : localStorage.setItem("theme", next); } catch (e) {}
+  });
+})();
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

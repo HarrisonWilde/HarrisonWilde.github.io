@@ -1,0 +1,13 @@
+{
+  "types": {
+    "public": "checkbox",
+    "favourite": "checkbox",
+    "date": "date",
+    "dates": "multitext",
+    "year": "number",
+    "rating": "number",
+    "support": "multitext",
+    "tags": "tags",
+    "aliases": "aliases"
+  }
+}

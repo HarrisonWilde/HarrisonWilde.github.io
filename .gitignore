@@ -1,2 +1,10 @@
 .DS_Store
 .venv/
+__pycache__/
+# build output: _site/ is the public site, _private/ must never be published
+_site/
+_site.tmp/
+_private/
+_private.tmp/
+# local tool settings
+.claude/

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Research · {{ site.title }}{% endblock %}
+{% block main %}
+{% if pubs %}
+<section id="publications">
+  {% for year, items in pubs %}
+  <div class="year-group">
+    <h3>{{ year }}</h3>
+    <ol class="pubs">
+    {% for p in items %}
+      <li>
+        {% if p.link %}<a class="pub-title" href="{{ p.link }}">{{ p.title }}</a>{% else %}<span class="pub-title">{{ p.title }}</span>{% endif %}
+        <div class="pub-meta">
+          {% if p.venue %}<i title="{{ p.venue_full }}">{{ p.venue }}</i>{% endif %}
+          {%- if p.note %} · <span class="pub-note">{{ p.note|inline }}</span>{% endif %}<br>
+          {{ p.authors_html(me)|safe }}
+        </div>
+      </li>
+    {% endfor %}
+    </ol>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+{% endblock %}

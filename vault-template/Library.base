@@ -1,0 +1,134 @@
+filters:
+  and:
+    - 'file.ext == "md"'
+    - not:
+        - file.inFolder("_templates")
+views:
+  - type: table
+    name: Films
+    filters:
+      and:
+        - file.inFolder("films")
+    order:
+      - file.name
+      - date
+      - director
+      - year
+      - where
+      - rating
+      - public
+    sort:
+      - property: date
+        direction: DESC
+  - type: table
+    name: Art
+    filters:
+      and:
+        - file.inFolder("art")
+    order:
+      - file.name
+      - artist
+      - year
+      - date
+      - where
+      - city
+      - public
+    sort:
+      - property: date
+        direction: DESC
+  - type: table
+    name: Gigs
+    filters:
+      and:
+        - file.inFolder("gigs")
+    order:
+      - file.name
+      - date
+      - where
+      - city
+      - rating
+      - public
+    sort:
+      - property: date
+        direction: DESC
+  - type: table
+    name: Books
+    filters:
+      and:
+        - file.inFolder("books")
+    order:
+      - file.name
+      - author
+      - date
+      - status
+      - rating
+      - public
+    sort:
+      - property: date
+        direction: DESC
+  - type: table
+    name: Places
+    filters:
+      and:
+        - file.inFolder("places")
+    order:
+      - file.name
+      - type
+      - where
+      - city
+      - status
+      - rating
+      - public
+    sort:
+      - property: date
+        direction: DESC
+  - type: table
+    name: Music
+    filters:
+      and:
+        - file.inFolder("music")
+    order:
+      - file.name
+      - artist
+      - year
+      - date
+      - rating
+      - public
+    sort:
+      - property: date
+        direction: DESC
+  - type: table
+    name: Writing
+    filters:
+      and:
+        - file.inFolder("writing")
+    order:
+      - file.name
+      - date
+      - summary
+      - public
+    sort:
+      - property: date
+        direction: DESC
+  - type: table
+    name: Public
+    filters:
+      and:
+        - public == true
+    order:
+      - file.name
+      - file.folder
+      - date
+    sort:
+      - property: date
+        direction: DESC
+  - type: table
+    name: Want to
+    filters:
+      and:
+        - 'status == "want"'
+    order:
+      - file.name
+      - file.folder
+      - city
+      - type

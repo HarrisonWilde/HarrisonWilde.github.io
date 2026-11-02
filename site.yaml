@@ -1,0 +1,117 @@
+# Site configuration for wilde.page.
+# Relative paths resolve against this file; ~ is expanded.
+
+title: Harrison Wilde
+description: Harrison Wilde is a statistician working at Nesta on public health research and policy.
+url: https://wilde.page # used for absolute links in the Atom feed; no trailing slash
+lang: en-GB
+links: # listed under the bio on the about page; a "mailto:" address works too
+  - [GitHub, "https://github.com/HarrisonWilde"]
+  - [Twitter, "https://twitter.com/HarrisonDWilde"]
+  - [LinkedIn, "https://linkedin.com/in/HarrisonWilde"]
+
+# The private archive: an Obsidian vault (or any folder of Markdown files).
+# It must live outside this repository, which is public.
+# Override per run with --archive PATH.
+archive: ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Personal
+
+# Where `serve --private` listens. 127.0.0.1 is this Mac; 100.111.254.1 is its
+# WireGuard address, so devices on the tunnel can open it too. Only this Mac and
+# the networks under `allow` are ever answered, never other devices on the Wi-Fi.
+# `allow` is the whole tunnel because only my own devices are on it; if anyone
+# else joins, narrow it to single addresses, e.g. 100.111.254.2/32.
+private_server:
+  port: 4001
+  hosts: [127.0.0.1, 100.111.254.1]
+  allow: [100.111.254.0/24]
+
+# Where `hw.py deploy` publishes: a Cloudflare Worker that only serves static files.
+cloudflare:
+  account: 375cb372058eed98461b31f16ea5df31
+  worker: wilde-page
+  domains: [wilde.page, www.wilde.page]
+
+# One block per collection. The key is the folder name in the archive and
+# the URL path on the site.
+#
+#   label     heading for the collection
+#   kind      small-caps label in feeds
+#   verb      starts feed titles: "Watched Past Lives"
+#   date_label  label for the date on entry pages
+#   italic    set titles in italics (titles of works)
+#   meta      fields shown after the title, joined by commas
+#   location  fields shown after a middle dot
+#   columns   columns in the private library table (title and date are implicit)
+#   private   fields that never leave the private build, even on public entries
+#   in_feed   false to keep the collection out of the feed (defaults to true)
+collections:
+  films:
+    label: Films
+    kind: film
+    verb: Watched
+    date_label: watched
+    italic: true
+    meta: [director, year]
+    location: [where]
+    columns: [director, year, where, rating]
+    private: [with]
+  art:
+    label: Art
+    kind: art
+    verb: Saw
+    date_label: seen
+    italic: true
+    meta: [artist, year]
+    location: [where, city]
+    columns: [artist, year, where, city]
+    private: [with]
+  gigs:
+    label: Gigs
+    kind: gig
+    verb: Saw
+    date_label: date
+    italic: false
+    meta: [support]
+    location: [where, city]
+    columns: [where, city, support, rating]
+    private: [with]
+  books:
+    label: Books
+    kind: book
+    verb: Read
+    date_label: finished
+    italic: true
+    meta: [author, year]
+    location: []
+    columns: [author, year, rating]
+    private: []
+  places:
+    label: Places
+    kind: place
+    verb: Went to
+    date_label: visited
+    italic: false
+    meta: [type]
+    location: [where, city]
+    columns: [type, where, city, status, rating]
+    private: [with, address]
+  music:
+    label: Music
+    kind: album
+    verb: Listened to
+    date_label: listened
+    italic: true
+    meta: [artist, year]
+    location: []
+    columns: [artist, year, rating]
+    private: []
+  writing:
+    label: Writing
+    kind: writing
+    verb: Wrote
+    date_label: published
+    italic: false
+    meta: []
+    location: []
+    columns: [summary]
+    private: []

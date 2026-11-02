@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% block title %}{{ e.title }} · {{ site.title }}{% endblock %}
+{% block description %}{{ e.feed_title }}{% endblock %}
+{% block main %}
+<article class="entry">
+  <p class="kicker"><a href="/{{ c.key }}/">{{ c.kind }}</a>{% if e.favourite %} · <span class="fav">♥</span> favourite{% endif %}</p>
+  <h1 class="page-title">{{ m.title(e) }}</h1>
+  {% if e.meta_line %}<p class="sub">{{ e.meta_line }}</p>{% endif %}
+  {% if e.image_url %}
+  <figure class="cover">
+    <img src="{{ e.image_url }}" alt="{{ e.title }}" referrerpolicy="no-referrer">
+    {% if e.caption %}<figcaption>{{ e.caption }}</figcaption>{% endif %}
+  </figure>
+  {% endif %}
+  <dl class="facts">
+    {% if e.when %}
+    <dt>{{ c.date_label }}</dt>
+    <dd>{{ e.when.long }}{% for w in e.extra %}; also {{ w.long }}{% endfor %}</dd>
+    {% endif %}
+    {% if e.rating %}<dt>rating</dt><dd class="stars">{{ e.rating|stars }}</dd>{% endif %}
+    {% for name, value in e.facts() %}
+    <dt>{{ name|lower }}</dt><dd>{{ value|autolink }}</dd>
+    {% endfor %}
+    {% if e.link %}<dt>link</dt><dd><a href="{{ e.link }}">{{ e.link|host }}</a></dd>{% endif %}
+    {% if e.tags %}<dt>tags</dt><dd>{{ e.tags|join(", ") }}</dd>{% endif %}
+  </dl>
+  {% if e.html %}<div class="prose">{{ e.html }}</div>{% endif %}
+  {% if private %}
+  <p class="status">
+    {% if e.public %}<b>Public.</b> Listed in the feed and published with the site.{% else %}<b>Private.</b> Tick <code>public</code> in Obsidian to publish it.{% endif %}
+    <br><code>{{ e.source_rel }}</code>
+  </p>
+  {% endif %}
+</article>
+{% endblock %}

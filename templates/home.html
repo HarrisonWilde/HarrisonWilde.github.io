@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% block masthead %}
+  <h1 class="name">{{ site.title }}</h1>
+{% endblock %}
+{% block main %}
+<section class="bio">
+{{ bio }}
+{% if site.links %}
+<ul class="links">
+{% for name, url in site.links %}
+  <li><a href="{{ url }}">{{ name }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+</section>
+
+{% if recent %}
+<section id="feed">
+  <h2>Feed</h2>
+  {{ m.feed_groups(recent) }}
+</section>
+{% endif %}
+{% endblock %}

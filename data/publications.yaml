@@ -1,0 +1,31 @@
+# Hand edits layered over data/publications.json (which `uv run hw.py scholar` regenerates).
+
+# Your name as it appears in author lists; these are set in bold.
+me:
+  - Harrison Wilde
+  - Harry Wilde
+  - H Wilde
+
+# Short display names for venues, keyed by the start of Scholar's venue string (case-insensitive).
+venues:
+  BMC medicine: BMC Medicine
+  BMJ open: BMJ Open
+  bmj: The BMJ
+  PLoS One: PLOS ONE
+  International conference on artificial intelligence and statistics: AISTATS
+  Uncertainty in Artificial Intelligence: UAI
+
+# Per-paper edits, keyed by any distinctive part of the title (case-insensitive).
+# Keys: title, venue, link, year, note (Markdown), hide: true, rename_authors: {old: new}
+papers:
+  mechanical ventilator compatible bed occupancy:
+    note: covered widely in the press ([Altmetric](https://medrxiv.altmetric.com/details/97586336))
+  COEXI (S) T:
+    title: "COEXI(S)T: modelling COVID-19 exit strategies for policy makers in the United Kingdom"
+    venue: Technical report
+    link: https://gbohner.github.io/coexist/
+  Faking feature importance:
+    rename_authors:
+      Sebastian Vollmerteke: Sebastian Vollmer
+  descriptive analysis. BMJ Open: # a malformed duplicate record on Scholar
+    hide: true

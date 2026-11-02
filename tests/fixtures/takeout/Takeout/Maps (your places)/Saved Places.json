@@ -1,0 +1,1 @@
+{"type": "FeatureCollection", "features": [{"geometry": {"coordinates": [-0.1015, 51.5203], "type": "Point"}, "properties": {"date": "2019-05-01T12:00:00Z", "google_maps_url": "http://maps.google.com/?cid=123", "location": {"address": "26 St John St, London EC1M 4AY, United Kingdom", "country_code": "GB", "name": "St. JOHN"}}, "type": "Feature"}]}

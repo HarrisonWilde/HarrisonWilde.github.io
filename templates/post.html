@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ e.title }} · {{ site.title }}{% endblock %}
+{% block description %}{{ e.summary or e.title }}{% endblock %}
+{% block main %}
+<article class="post">
+  <h1 class="page-title">{{ e.title }}</h1>
+  <p class="dateline">
+    {% if e.when %}<time datetime="{{ e.when.iso }}">{{ e.when.long }}</time>{% endif %}
+    {% if private and not e.public %} · <span class="badge">draft</span>{% endif %}
+  </p>
+  {% if e.html %}<div class="prose">{{ e.html }}</div>{% endif %}
+  {% if private %}
+  <p class="status">
+    {% if e.public %}<b>Public.</b>{% else %}<b>Draft.</b> Tick <code>public</code> in Obsidian to publish it.{% endif %}
+    <br><code>{{ e.source_rel }}</code>
+  </p>
+  {% endif %}
+</article>
+{% endblock %}
