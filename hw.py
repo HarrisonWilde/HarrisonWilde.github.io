@@ -7,6 +7,7 @@
   uv run hw.py publications              refresh publications from Google Scholar and Nesta
   uv run hw.py vault init PATH           set up an Obsidian vault for the archive
   uv run hw.py service install           keep the private site running (Mac + WireGuard) at login
+  uv run hw.py schedule install          publish every hour if anything has changed
 
 Add --archive PATH to any command to use a different archive, e.g. examples/archive.
 """
@@ -15,7 +16,9 @@ from __future__ import annotations
 
 import argparse
 import sys
+import tempfile
 from collections import Counter
+from datetime import datetime
 from pathlib import Path
 
 from sitegen import config
@@ -54,14 +57,17 @@ def cmd_deploy(args) -> None:
     from sitegen.build import build
 
     cfg = config.load()
-    result = build(cfg)
-    report(cfg, result, True)
-    deploy.check_ready(cfg, result)
-    if not args.yes and input(f"Publish this to {cfg.url}? [y/N] ").strip().lower() != "y":
-        print("Nothing published.")
-        return
-    deploy.publish(result.out, cfg.cloudflare["account"], cfg.cloudflare["worker"], cfg.cloudflare["domains"])
-    print(f"Published to {cfg.url}")
+    with tempfile.TemporaryDirectory() as tmp:  # its own copy, so a running preview can't interfere
+        result = build(cfg, out=Path(tmp) / "site")
+        if args.if_changed and not result.warnings and not deploy.changed(result.out):
+            return
+        report(cfg, result, True)
+        deploy.check_ready(cfg, result)
+        if not args.yes and input(f"Publish this to {cfg.url}? [y/N] ").strip().lower() != "y":
+            print("Nothing published.")
+            return
+        deploy.publish(result.out, cfg.cloudflare["account"], cfg.cloudflare["worker"], cfg.cloudflare["domains"])
+    print(f"{datetime.now():%Y-%m-%d %H:%M} published to {cfg.url}")
 
 
 def report(cfg, result, list_entries: bool) -> None:
@@ -93,7 +99,8 @@ def cmd_publications(args) -> None:
 def cmd_service(args) -> None:
     from sitegen import service
 
-    service.install() if args.action == "install" else service.uninstall()
+    agent = "publish" if args.command == "schedule" else "private"
+    service.install(agent) if args.action == "install" else service.uninstall(agent)
 
 
 def cmd_vault(args) -> None:
@@ -122,6 +129,7 @@ def main() -> None:
 
     p = sub.add_parser("deploy", help="build the public site and publish it")
     p.add_argument("--yes", action="store_true", help="don't ask before publishing")
+    p.add_argument("--if-changed", action="store_true", help="do nothing if the site hasn't changed since the last publish")
     p.set_defaults(func=cmd_deploy)
 
     p = sub.add_parser("publications", aliases=["scholar"], help="refresh publications from Google Scholar and Nesta")
@@ -129,6 +137,10 @@ def main() -> None:
     p.set_defaults(func=cmd_publications)
 
     p = sub.add_parser("service", help="run the private site in the background at login (launchd)")
+    p.add_argument("action", choices=["install", "uninstall"])
+    p.set_defaults(func=cmd_service)
+
+    p = sub.add_parser("schedule", help="publish every hour if anything has changed (launchd)")
     p.add_argument("action", choices=["install", "uninstall"])
     p.set_defaults(func=cmd_service)
 

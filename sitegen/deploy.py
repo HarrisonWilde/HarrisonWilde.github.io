@@ -20,6 +20,7 @@ from .build import MARKER
 
 API = "https://api.cloudflare.com/client/v4"
 KEYCHAIN_SERVICE = "wilde-page-cloudflare"
+STATE = config.ROOT / ".last-publish"  # a fingerprint of what's live, so a scheduled run can skip if nothing changed
 COMPATIBILITY_DATE = "2026-11-02"
 ASSET_CONFIG = {"html_handling": "auto-trailing-slash", "not_found_handling": "none"}
 
@@ -30,6 +31,8 @@ def check_ready(cfg, result) -> None:
         raise SystemExit("Not publishing: this was built from the sample archive.")
     if result.warnings:
         raise SystemExit("Not publishing until the warnings above are fixed.")
+    if not result.entries and not result.left_out:
+        raise SystemExit("Not publishing: the archive has no notes, so it may not have synced.")
     if not all(cfg.cloudflare.get(key) for key in ("account", "worker", "domains")):
         raise SystemExit("Not publishing: site.yaml needs cloudflare: account, worker and domains.")
 
@@ -42,6 +45,14 @@ def manifest(site: Path) -> dict[str, dict]:
         digest = hashlib.sha256(base64.b64encode(data) + path.suffix.lstrip(".").encode()).hexdigest()[:32]
         files["/" + path.relative_to(site).as_posix()] = {"hash": digest, "size": len(data)}
     return files
+
+
+def fingerprint(site: Path) -> str:
+    return hashlib.sha256(json.dumps(manifest(site), sort_keys=True).encode()).hexdigest()
+
+
+def changed(site: Path) -> bool:
+    return not STATE.exists() or STATE.read_text() != fingerprint(site)
 
 
 def content_type(path: str) -> str:
@@ -86,3 +97,4 @@ def publish(site: Path, account: str, worker: str, domains: list[str]) -> None:
     call("POST", f"{base}/scripts/{worker}/subdomain", token, json={"enabled": False, "previews_enabled": False})
     for domain in domains:
         call("PUT", f"{base}/domains", token, json={"hostname": domain, "service": worker})
+    STATE.write_text(fingerprint(site))

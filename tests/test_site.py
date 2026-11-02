@@ -202,6 +202,7 @@ class Deploy(unittest.TestCase):
         from sitegen import deploy
 
         tmp = Path(tempfile.mkdtemp())
+        state = tmp.with_name(tmp.name + ".state")
         try:
             (tmp / ".hw-build").touch()
             (tmp / "index.html").write_text("<p>home</p>")
@@ -210,7 +211,7 @@ class Deploy(unittest.TestCase):
             self.assertEqual(sorted(files), ["/index.html", "/style.css"])  # the build marker stays behind
             page = files["/index.html"]["hash"]
             replies = [{"jwt": "upload", "buckets": [[page]]}, {"jwt": "done"}, {}, {}, {}]
-            with patch.object(deploy, "read_token", return_value="token"), \
+            with patch.object(deploy, "STATE", state), patch.object(deploy, "read_token", return_value="token"), \
                     patch.object(deploy, "call", side_effect=replies) as call:
                 deploy.publish(tmp, "account", "site", ["example.page"])
             _, url, token = call.call_args_list[1].args
@@ -223,6 +224,38 @@ class Deploy(unittest.TestCase):
             self.assertEqual(call.call_args_list[4].kwargs["json"], {"hostname": "example.page", "service": "site"})
         finally:
             shutil.rmtree(tmp)
+            state.unlink(missing_ok=True)
+
+    def test_scheduled_run_only_publishes_changes(self):
+        from unittest.mock import patch
+
+        from sitegen import deploy
+
+        tmp = Path(tempfile.mkdtemp())
+        try:
+            site = tmp / "site"
+            site.mkdir()
+            (site / "index.html").write_text("<p>home</p>")
+            with patch.object(deploy, "STATE", tmp / "state"), patch.object(deploy, "read_token", return_value="token"), \
+                    patch.object(deploy, "call", return_value={"jwt": "done", "buckets": []}):
+                self.assertTrue(deploy.changed(site))  # never published
+                deploy.publish(site, "account", "site", [])
+                self.assertFalse(deploy.changed(site))
+                (site / "index.html").write_text("<p>changed</p>")
+                self.assertTrue(deploy.changed(site))
+        finally:
+            shutil.rmtree(tmp)
+
+    def test_builds_are_repeatable(self):  # otherwise a scheduled run would publish every hour
+        from sitegen import deploy
+
+        tmp = Path(tempfile.mkdtemp())
+        try:
+            cfg = config.load(archive=SAMPLE)
+            one, two = build(cfg, out=tmp / "one").out, build(cfg, out=tmp / "two").out
+            self.assertEqual(deploy.fingerprint(one), deploy.fingerprint(two))
+        finally:
+            shutil.rmtree(tmp)
 
     def test_refuses_partial_builds(self):
         from types import SimpleNamespace
@@ -230,9 +263,13 @@ class Deploy(unittest.TestCase):
         from sitegen.deploy import check_ready
 
         ready = {"account": "a", "worker": "w", "domains": ["example.page"]}
-        clean, warned = SimpleNamespace(warnings=[]), SimpleNamespace(warnings=["Archive not found"])
+        clean = SimpleNamespace(warnings=[], entries=["an entry"], left_out=0)
+        warned = SimpleNamespace(warnings=["Archive not found"], entries=[], left_out=0)
         real = SimpleNamespace(archive=Path("/somewhere/else"), cloudflare=ready)
         check_ready(real, clean)
+        check_ready(real, SimpleNamespace(warnings=[], entries=[], left_out=2))  # everything unticked is allowed
+        with self.assertRaises(SystemExit):
+            check_ready(real, SimpleNamespace(warnings=[], entries=[], left_out=0))  # no notes at all isn't
         with self.assertRaises(SystemExit):
             check_ready(real, warned)
         with self.assertRaises(SystemExit):

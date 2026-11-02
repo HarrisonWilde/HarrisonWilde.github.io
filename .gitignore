@@ -8,3 +8,5 @@ _private/
 _private.tmp/
 # local tool settings
 .claude/
+# what was last published
+.last-publish

@@ -12,7 +12,7 @@ Dates can be partial: `2019` or `2019-05` if that's all you remember. A second v
 
 ## Publishing
 
-- Tick **public** and the entry appears in the feed on wilde.page the next time the site is published (`uv run hw.py deploy`).
+- Tick **public** and the entry appears on wilde.page within the hour, as long as the Mac is on. Untick it and it comes down the same way. To publish straight away, run `uv run hw.py deploy` on the Mac.
 - Anything between `%%` markers stays private, even on a public note:
 
   `%% only I can see this %%`
