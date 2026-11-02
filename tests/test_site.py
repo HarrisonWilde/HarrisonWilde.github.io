@@ -9,7 +9,6 @@ from pathlib import Path
 from sitegen import config
 from sitegen.build import build, check_public
 from sitegen.dates import parse_when
-from sitegen.importers import books, gmaps, letterboxd, note_text
 from sitegen.markup import strip_private
 
 ROOT = config.ROOT
@@ -260,57 +259,6 @@ class Dates(unittest.TestCase):
         self.assertIsNone(parse_when(None))
         with self.assertRaises(ValueError):
             parse_when("last summer")
-
-
-class Importers(unittest.TestCase):
-    def test_letterboxd(self):
-        films = {n.fields["title"]: n.fields | {"body": n.body} for n in letterboxd.read(FIXTURES / "letterboxd")}
-        self.assertEqual(set(films), {"Past Lives", "Paris, Texas", "Heat"})  # deleted/ is ignored
-        self.assertEqual(films["Past Lives"]["date"], date(2026, 10, 12))
-        self.assertEqual(films["Past Lives"]["body"], "So *good*.\nReally.")
-        self.assertEqual(films["Paris, Texas"]["date"], date(2024, 1, 30))
-        self.assertEqual(films["Paris, Texas"]["dates"], [date(2026, 6, 3)])
-        self.assertTrue(films["Paris, Texas"]["favourite"])
-        self.assertEqual(films["Heat"]["rating"], 4.0)
-        self.assertIsNone(films["Heat"]["date"])
-        self.assertTrue(all(f["public"] is False for f in films.values()))
-
-    def test_goodreads(self):
-        notes = {n.fields["title"]: n for n in books.read(FIXTURES / "goodreads_library_export.csv")}
-        d = notes["The Dispossessed"]
-        self.assertEqual((d.fields["date"], d.fields["rating"], d.fields["status"]), (date(2026, 8, 30), 5, "read"))
-        self.assertEqual(d.fields["isbn"], "9780061054884")
-        self.assertIn("%%\nBorrowed from a friend\n%%", d.body)
-        lw = notes["Leviathan Wakes"]
-        self.assertEqual((lw.fields["series"], lw.fields["status"], lw.fields["rating"]), ("The Expanse #1", "want", None))
-
-    def test_storygraph(self):
-        (n,) = books.read(FIXTURES / "storygraph.csv")
-        self.assertEqual((n.fields["title"], n.fields["rating"], n.fields["date"]), ("Piranesi", 4.75, date(2026, 1, 20)))
-
-    def test_google_maps(self):
-        places = {n.fields["title"]: n for n in gmaps.read(FIXTURES / "takeout")}
-        self.assertEqual(set(places), {"St. JOHN", "Bar Leone"})  # list, starred and review entries merged
-        sj = places["St. JOHN"].fields
-        self.assertEqual((sj["status"], sj["city"], sj["rating"], sj["favourite"]), ("been", "London", 5, True))
-        self.assertEqual(sj["date"], date(2024, 3, 10))
-        self.assertIn("Still the best.", places["St. JOHN"].body)
-        self.assertEqual(places["Bar Leone"].fields["status"], "want")
-
-    def test_note_round_trip(self):
-        from sitegen.entries import read_note
-
-        tmp = Path(tempfile.mkdtemp())
-        try:
-            (n,) = books.read(FIXTURES / "storygraph.csv")
-            path = tmp / "Piranesi.md"
-            path.write_text(note_text(n.fields, n.body))
-            fields, body = read_note(path)
-            self.assertEqual(fields["date"], date(2026, 1, 20))
-            self.assertIs(fields["public"], False)
-            self.assertEqual(body.strip(), "Strange and lovely.")
-        finally:
-            shutil.rmtree(tmp)
 
 
 if __name__ == "__main__":

@@ -5,7 +5,6 @@
   uv run hw.py build [--private] [--list]
   uv run hw.py deploy                    build the public site and publish it to wilde.page
   uv run hw.py publications              refresh publications from Google Scholar and Nesta
-  uv run hw.py import letterboxd FILE    (also goodreads, storygraph, gmaps); add --write to save
   uv run hw.py vault init PATH           set up an Obsidian vault for the archive
   uv run hw.py service install           keep the private site running (Mac + WireGuard) at login
 
@@ -91,13 +90,6 @@ def cmd_publications(args) -> None:
     sys.exit(1 if failures else 0)
 
 
-def cmd_import(args) -> None:
-    from sitegen.importers import run_import
-
-    cfg = config.load(archive=args.archive)
-    run_import(cfg, args.source, Path(args.file).expanduser(), write=args.write)
-
-
 def cmd_service(args) -> None:
     from sitegen import service
 
@@ -135,13 +127,6 @@ def main() -> None:
     p = sub.add_parser("publications", aliases=["scholar"], help="refresh publications from Google Scholar and Nesta")
     p.add_argument("source", nargs="?", choices=["all", "scholar", "nesta"], default="all")
     p.set_defaults(func=cmd_publications)
-
-    p = sub.add_parser("import", help="import an export from another service into the archive")
-    p.add_argument("source", choices=["letterboxd", "goodreads", "storygraph", "gmaps"])
-    p.add_argument("file", help="the export (.zip, .csv or folder)")
-    p.add_argument("--write", action="store_true", help="write notes (default: dry run)")
-    p.add_argument("--archive", help="archive folder (default: site.yaml)")
-    p.set_defaults(func=cmd_import)
 
     p = sub.add_parser("service", help="run the private site in the background at login (launchd)")
     p.add_argument("action", choices=["install", "uninstall"])
