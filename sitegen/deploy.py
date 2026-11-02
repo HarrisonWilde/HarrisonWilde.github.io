@@ -47,6 +47,12 @@ def manifest(site: Path) -> dict[str, dict]:
     return files
 
 
+def uncommitted_changes() -> bool:
+    """A scheduled run builds from this folder, so it shouldn't publish half-finished edits to the code."""
+    found = subprocess.run(["git", "status", "--porcelain"], cwd=config.ROOT, capture_output=True, text=True, check=True)
+    return bool(found.stdout.strip())
+
+
 def fingerprint(site: Path) -> str:
     return hashlib.sha256(json.dumps(manifest(site), sort_keys=True).encode()).hexdigest()
 

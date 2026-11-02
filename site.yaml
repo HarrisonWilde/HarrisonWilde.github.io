@@ -9,6 +9,10 @@ links: # listed under the bio on the about page; a "mailto:" address works too
   - [GitHub, "https://github.com/HarrisonWilde"]
   - [Twitter, "https://twitter.com/HarrisonDWilde"]
   - [LinkedIn, "https://linkedin.com/in/HarrisonWilde"]
+person: # hidden from the page: tells search engines who the site is about, along with the links above
+  alternateName: Harry Wilde
+  jobTitle: Statistician
+  worksFor: {"@type": Organization, name: Nesta, url: "https://www.nesta.org.uk/"}
 
 # The private archive: an Obsidian vault (or any folder of Markdown files).
 # It must live outside this repository, which is public.

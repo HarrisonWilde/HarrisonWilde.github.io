@@ -40,6 +40,16 @@ class AirGap(unittest.TestCase):
             self.assertNotIn(title, self.text)
         self.assertFalse((self.tmp / "public" / "films" / "paris-texas-1984").exists())
 
+    def test_home_page_describes_the_person_for_search_engines(self):
+        import json
+        import re
+
+        home = (self.tmp / "public" / "index.html").read_text()
+        person = json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>', home, re.S).group(1))
+        self.assertEqual((person["@type"], person["alternateName"]), ("Person", "Harry Wilde"))
+        self.assertIn("https://github.com/HarrisonWilde", person["sameAs"])
+        self.assertNotIn("application/ld+json", (self.tmp / "private" / "index.html").read_text())
+
     def test_no_scholar_or_orcid_links(self):
         for host in ("scholar.google", "orcid.org"):
             self.assertNotIn(host, self.text)
@@ -243,6 +253,22 @@ class Deploy(unittest.TestCase):
                 self.assertFalse(deploy.changed(site))
                 (site / "index.html").write_text("<p>changed</p>")
                 self.assertTrue(deploy.changed(site))
+        finally:
+            shutil.rmtree(tmp)
+
+    def test_scheduled_run_waits_for_committed_code(self):
+        import subprocess
+        from unittest.mock import patch
+
+        from sitegen import deploy
+
+        tmp = Path(tempfile.mkdtemp())
+        try:
+            subprocess.run(["git", "init", "-q", str(tmp)], check=True)
+            with patch.object(deploy.config, "ROOT", tmp):
+                self.assertFalse(deploy.uncommitted_changes())
+                (tmp / "edit.html").touch()
+                self.assertTrue(deploy.uncommitted_changes())
         finally:
             shutil.rmtree(tmp)
 

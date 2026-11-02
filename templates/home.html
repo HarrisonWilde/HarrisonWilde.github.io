@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% import "_macros.html" as m with context %}
+{% block head %}
+{% if not private %}
+<script type="application/ld+json">{{ person|tojson }}</script>
+{% endif %}
+{% endblock %}
 {% block masthead %}
   <h1 class="name">{{ site.title }}</h1>
 {% endblock %}

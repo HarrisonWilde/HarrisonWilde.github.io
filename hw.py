@@ -56,6 +56,9 @@ def cmd_deploy(args) -> None:
     from sitegen import deploy
     from sitegen.build import build
 
+    if args.if_changed and deploy.uncommitted_changes():
+        print(f"{datetime.now():%Y-%m-%d %H:%M} skipped: the site's code has uncommitted changes")
+        return
     cfg = config.load()
     with tempfile.TemporaryDirectory() as tmp:  # its own copy, so a running preview can't interfere
         result = build(cfg, out=Path(tmp) / "site")

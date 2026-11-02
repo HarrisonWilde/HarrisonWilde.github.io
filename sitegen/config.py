@@ -39,6 +39,7 @@ class Config:
     collections: dict[str, Collection]
     private_server: dict
     cloudflare: dict
+    person: dict
 
 
 def load(path: Path = ROOT / "site.yaml", archive: str | Path | None = None) -> Config:
@@ -80,6 +81,7 @@ def load(path: Path = ROOT / "site.yaml", archive: str | Path | None = None) -> 
         collections=collections,
         private_server=raw.get("private_server") or {},
         cloudflare=raw.get("cloudflare") or {},
+        person=raw.get("person") or {},
     )
 
 

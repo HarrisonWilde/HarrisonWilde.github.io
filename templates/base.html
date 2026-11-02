@@ -12,6 +12,7 @@
 {% if has_feed and not private %}
 <link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="/feed.xml">
 {% endif %}
+{% block head %}{% endblock %}
 </head>
 <body{% if body_class or private %} class="{{ body_class }}{% if private %} has-private-bar{% endif %}"{% endif %}>
 {% if private %}

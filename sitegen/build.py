@@ -142,7 +142,9 @@ class Site:
     def render_home(self) -> None:
         _, bio = read_note(ROOT / "content" / "home.md")
         plain = Renderer(self.private, self.note_url, lambda name: None)
-        self.page("index.html", "home.html", current="/", bio=Markup(plain(bio)), recent=group_by_year(self.feed[:6]))
+        person = {"@context": "https://schema.org", "@type": "Person", "name": self.cfg.title, "url": f"{self.cfg.url}/",
+                  "sameAs": [url for _, url in self.cfg.links], **self.cfg.person}
+        self.page("index.html", "home.html", current="/", bio=Markup(plain(bio)), recent=group_by_year(self.feed[:6]), person=person)
 
     def render_research(self) -> None:
         self.page(
