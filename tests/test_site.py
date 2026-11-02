@@ -189,7 +189,7 @@ class Images(unittest.TestCase):
                 self.assertEqual(len(im.getexif()), 0)
             page = (tmp / "site" / "art" / "public" / "index.html").read_text()
             self.assertIn('src="/media/photo.jpg"', page)
-            self.assertIn("<figcaption>My photo</figcaption>", page)
+            self.assertNotIn("My photo", page)  # captions stay in the note
         finally:
             shutil.rmtree(tmp)
 

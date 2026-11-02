@@ -25,7 +25,7 @@ RESERVED = {
     "rating", "share_images", "aliases", "cssclasses", "slug", "summary", "status", "caption",
 }
 # Never published, whatever the collection config says.
-ALWAYS_PRIVATE = {"with", "private"}
+ALWAYS_PRIVATE = {"with", "private", "caption"}
 # Statuses that keep an entry out of the feed (still in the library).
 NOT_IN_FEED = {"want", "reading", "watching", "listening"}
 

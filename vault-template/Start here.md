@@ -18,7 +18,7 @@ Dates can be partial: `2019` or `2019-05` if that's all you remember. A second v
   `%% only I can see this %%`
 
 - **with** (and **address** for places) never leave this vault, public or not.
-- **Images:** fill in **image**, with any credit in **caption**, and the image appears on the entry's page. Paste the web address of an image online, which keeps loading from that site, or attach your own photo to the note (Obsidian saves it in the vault) and put its file name. Your own photos are resized for the public site, with their location data removed. Photos inside `%%` markers stay private.
+- **Images:** fill in **image** and the image appears on the entry's page. Paste the web address of an image online, which keeps loading from that site, or attach your own photo to the note (Obsidian saves it in the vault) and put its file name. Your own photos are resized for the public site, with their location data removed. **caption** is for your own record, such as a credit, and never appears on the public site. Photos inside `%%` markers stay private.
 
 ## Lists
 
