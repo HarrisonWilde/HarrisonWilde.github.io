@@ -17,16 +17,11 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root {
     --bg: #0e0e0d; --fg: #e8e4db; --muted: #a39d91; --faint: #78736a; --rule: #272623; --tint: #191917;
     --mark: #5a4b12;
     color-scheme: dark;
   }
-}
-:root[data-theme="dark"] {
-  --bg: #0e0e0d; --fg: #e8e4db; --muted: #a39d91; --faint: #78736a; --rule: #272623; --tint: #191917;
-  --mark: #5a4b12;
-  color-scheme: dark;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -57,7 +52,7 @@ mark { background: var(--mark); color: inherit; padding: 0 .1em; }
 /* the same on every page; only the home page marks the name up as its h1 */
 .masthead .name { font-weight: 400; font-size: 2.05rem; line-height: 1.15; margin: 0; letter-spacing: .005em; }
 .masthead .name a, .masthead .name a:visited { color: var(--fg); text-decoration: none; }
-nav { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 1.3rem; margin-top: 1.4rem; font-variant-caps: all-small-caps; letter-spacing: .09em; font-size: 1.1rem; }
+nav { display: flex; flex-wrap: wrap; gap: 0 1.3rem; margin-top: 1.4rem; font-variant-caps: all-small-caps; letter-spacing: .09em; font-size: 1.1rem; }
 nav a, nav a:visited { color: var(--link); text-decoration: none; }
 nav a[aria-current="page"] { color: var(--fg); }
 nav a:hover { text-decoration: underline; }
@@ -164,12 +159,6 @@ table.library { width: 100%; border-collapse: collapse; font-size: .95rem; line-
 .counts td { padding: .25rem 1.6rem .25rem 0; }
 .counts td + td { text-align: right; color: var(--muted); }
 .warnings li { color: var(--accent); font-size: .95rem; }
-
-/* theme toggle, at the end of the nav */
-.theme { padding: 0 .1rem; border: 0; background: none; color: var(--muted); font: inherit; font-size: 1.05rem; line-height: 1; cursor: pointer; }
-.theme:hover { color: var(--fg); }
-.theme svg { display: none; width: 1em; height: 1em; vertical-align: -.25em; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-.theme[data-mode="auto"] .auto, .theme[data-mode="light"] .light, .theme[data-mode="dark"] .dark { display: inline-block; }
 
 @media (max-width: 34rem) {
   :root { --gutter: 1rem; }
