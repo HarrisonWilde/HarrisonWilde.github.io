@@ -1,6 +1,7 @@
 """Refresh data/publications.json from a Google Scholar profile.
 
-Scholar has no API and rate-limits scrapers, so this runs by hand and slowly.
+Scholar has no API and rate-limits scrapers, so this runs slowly, once a day, and
+only fetches the details of papers it hasn't seen before.
 Parsing is kept in pure functions (tested against fixture HTML); fetching is a
 short loop around them. A blocked or partial run never replaces good data:
 details it can't fetch this time are carried over from the previous run.
@@ -111,9 +112,11 @@ def scrape(previous: dict) -> dict:
     pubs, blocked = [], False
     for i, row in enumerate(rows, 1):
         url = row.pop("detail_url")
+        old = earlier.get(row["title"].lower(), {})
+        known = {k: old[k] for k in CARRIED_OVER if old.get(k)}
         print(f"  [{i}/{len(rows)}] {row['title'][:72]}")
         details = {}
-        if url and not blocked:
+        if url and not blocked and not known.get("authors"):  # a paper's details rarely change, so only new ones are fetched
             time.sleep(DELAY)
             try:
                 details = parse_details(fetch(session, url))
@@ -122,10 +125,7 @@ def scrape(previous: dict) -> dict:
                 print("  Scholar started asking for a captcha; reusing earlier details for the rest.")
             except requests.RequestException as exc:
                 print(f"  couldn't fetch details ({exc}); reusing earlier ones")
-        if not details:
-            old = earlier.get(row["title"].lower(), {})
-            details = {k: old[k] for k in CARRIED_OVER if old.get(k)}
-        pubs.append(row | details)
+        pubs.append(row | (details or known))
     return {"updated": date.today().isoformat(), "profile": PROFILE, "stats": stats, "publications": pubs}
 
 

@@ -10,3 +10,6 @@ _private.tmp/
 .claude/
 # what was last published
 .last-publish
+# downloaded from Scholar and Nesta by `hw.py publications`; hand edits stay in data/publications.yaml
+data/publications.json
+data/nesta.json

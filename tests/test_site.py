@@ -116,6 +116,23 @@ class Scholar(unittest.TestCase):
         self.assertEqual(second["authors"], ["A Author", "B Author"])  # Scholar's "..." dropped
         self.assertEqual((second["year"], second["citations"], second["detail_url"]), (None, 0, None))
 
+    def test_only_new_papers_get_detail_requests(self):
+        from unittest.mock import patch
+
+        from sitegen import scholar
+
+        profile = (FIXTURES / "scholar" / "profile.html").read_text()
+        detail = (FIXTURES / "scholar" / "detail.html").read_text()
+        linked = next(r for r in scholar.parse_profile(profile)[1] if r.get("detail_url"))
+        known = {"publications": [{"title": linked["title"], "authors": ["Known Author"]}]}
+        for previous, requests_expected in ((known, 0), ({}, 1)):
+            with patch.object(scholar, "fetch", side_effect=lambda s, url: profile if "cstart" in url else detail) as fetch, \
+                    patch.object(scholar, "DELAY", 0):
+                pubs = scholar.scrape(previous)["publications"]
+            self.assertEqual(sum("cstart" not in c.args[1] for c in fetch.call_args_list), requests_expected)
+            if previous:  # a known paper keeps the details saved last time
+                self.assertEqual(next(p for p in pubs if p["title"] == linked["title"])["authors"], ["Known Author"])
+
     def test_parse_details(self):
         from sitegen.scholar import parse_details
 

@@ -7,7 +7,7 @@
   uv run hw.py publications              refresh publications from Google Scholar and Nesta
   uv run hw.py vault init PATH           set up an Obsidian vault for the archive
   uv run hw.py service install           keep the private site running (Mac + WireGuard) at login
-  uv run hw.py schedule install          publish every hour if anything has changed
+  uv run hw.py schedule install          publish hourly if anything changed, and refresh publications daily
 
 Add --archive PATH to any command to use a different archive, e.g. examples/archive.
 """
@@ -102,8 +102,8 @@ def cmd_publications(args) -> None:
 def cmd_service(args) -> None:
     from sitegen import service
 
-    agent = "publish" if args.command == "schedule" else "private"
-    service.install(agent) if args.action == "install" else service.uninstall(agent)
+    for agent in ["publish", "publications"] if args.command == "schedule" else ["private"]:
+        service.install(agent) if args.action == "install" else service.uninstall(agent)
 
 
 def cmd_vault(args) -> None:
@@ -143,7 +143,7 @@ def main() -> None:
     p.add_argument("action", choices=["install", "uninstall"])
     p.set_defaults(func=cmd_service)
 
-    p = sub.add_parser("schedule", help="publish every hour if anything has changed (launchd)")
+    p = sub.add_parser("schedule", help="publish hourly if anything changed, and refresh publications daily (launchd)")
     p.add_argument("action", choices=["install", "uninstall"])
     p.set_defaults(func=cmd_service)
 

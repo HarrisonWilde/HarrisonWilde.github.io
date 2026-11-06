@@ -27,6 +27,13 @@ AGENTS = {
         "when": {"StartInterval": 3600},  # launchd catches up once when the Mac wakes
         "installed": "the site now publishes every hour if anything has changed, while this Mac is on.",
     },
+    "publications": {
+        "label": "com.harrisonwilde.wilde-page.publications",
+        "log": "wilde-page-publications.log",
+        "command": ["publications"],
+        "when": {"StartCalendarInterval": {"Hour": 7, "Minute": 0}},  # or as soon as the Mac wakes after 7
+        "installed": "publications now refresh every morning at 7, or when this Mac next wakes.",
+    },
 }
 
 
